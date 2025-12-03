@@ -431,6 +431,114 @@
             ...secondaryImageIds
         ];
 
+        // Text style configurations
+        const textStyles = [
+            {
+                name: 'Golden Sunrise',
+                position: 'center',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#FFD700', '#FFF8DC', '#FFD700'],
+                    shadow: 'rgba(255, 215, 0, 0.5)',
+                    outline: 'rgba(0, 0, 0, 0.5)'
+                })
+            },
+            {
+                name: 'Ocean Blue',
+                position: 'bottom',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#00CED1', '#E0FFFF', '#00CED1'],
+                    shadow: 'rgba(0, 206, 209, 0.6)',
+                    outline: 'rgba(0, 50, 80, 0.6)'
+                })
+            },
+            {
+                name: 'Rose Pink',
+                position: 'center',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#FF69B4', '#FFB6C1', '#FF69B4'],
+                    shadow: 'rgba(255, 105, 180, 0.5)',
+                    outline: 'rgba(80, 20, 50, 0.5)'
+                })
+            },
+            {
+                name: 'Pure White',
+                position: 'bottom',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#FFFFFF', '#F0F0F0', '#FFFFFF'],
+                    shadow: 'rgba(255, 255, 255, 0.8)',
+                    outline: 'rgba(0, 0, 0, 0.7)'
+                })
+            },
+            {
+                name: 'Sunset Orange',
+                position: 'center',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#FF6347', '#FFA07A', '#FF6347'],
+                    shadow: 'rgba(255, 99, 71, 0.6)',
+                    outline: 'rgba(50, 20, 10, 0.6)'
+                })
+            },
+            {
+                name: 'Mint Fresh',
+                position: 'bottom',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#98FB98', '#F0FFF0', '#98FB98'],
+                    shadow: 'rgba(152, 251, 152, 0.6)',
+                    outline: 'rgba(20, 60, 20, 0.6)'
+                })
+            },
+            {
+                name: 'Royal Purple',
+                position: 'center',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#9370DB', '#E6E6FA', '#9370DB'],
+                    shadow: 'rgba(147, 112, 219, 0.6)',
+                    outline: 'rgba(40, 20, 60, 0.6)'
+                })
+            },
+            {
+                name: 'Warm Coral',
+                position: 'bottom',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#FF7F50', '#FFDAB9', '#FF7F50'],
+                    shadow: 'rgba(255, 127, 80, 0.6)',
+                    outline: 'rgba(60, 30, 20, 0.6)'
+                })
+            },
+            {
+                name: 'Sky Cyan',
+                position: 'center',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#87CEEB', '#F0FFFF', '#87CEEB'],
+                    shadow: 'rgba(135, 206, 235, 0.6)',
+                    outline: 'rgba(20, 40, 60, 0.6)'
+                })
+            },
+            {
+                name: 'Lemon Yellow',
+                position: 'bottom',
+                font: 'Pacifico',
+                getColors: () => ({
+                    gradient: ['#FFFF00', '#FFFACD', '#FFFF00'],
+                    shadow: 'rgba(255, 255, 0, 0.6)',
+                    outline: 'rgba(60, 60, 0, 0.7)'
+                })
+            }
+        ];
+
+        function getRandomStyle() {
+            return textStyles[Math.floor(Math.random() * textStyles.length)];
+        }
+
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -491,24 +599,42 @@
                 // Draw the image
                 ctx.drawImage(img, 0, 0);
 
-                // Add a subtle gradient overlay for better text visibility
-                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                gradient.addColorStop(0, 'rgba(0, 0, 0, 0.1)');
-                gradient.addColorStop(0.4, 'rgba(0, 0, 0, 0)');
-                gradient.addColorStop(0.6, 'rgba(0, 0, 0, 0)');
-                gradient.addColorStop(1, 'rgba(0, 0, 0, 0.2)');
-                ctx.fillStyle = gradient;
+                // Get random text style
+                const style = getRandomStyle();
+                const colors = style.getColors();
+
+                // Add gradient overlay based on text position
+                const overlayGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                if (style.position === 'bottom') {
+                    overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                    overlayGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+                    overlayGradient.addColorStop(0.8, 'rgba(0, 0, 0, 0.2)');
+                    overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
+                } else {
+                    overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0.1)');
+                    overlayGradient.addColorStop(0.4, 'rgba(0, 0, 0, 0)');
+                    overlayGradient.addColorStop(0.6, 'rgba(0, 0, 0, 0)');
+                    overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0.2)');
+                }
+                ctx.fillStyle = overlayGradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // Configure text style
                 const fontSize = Math.min(canvas.width, canvas.height) * 0.15;
-                ctx.font = `bold ${fontSize}px Pacifico, cursive`;
+                ctx.font = `bold ${fontSize}px ${style.font}, cursive`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
 
                 const text = 'Bom dia';
                 const x = canvas.width / 2;
-                const y = canvas.height / 2;
+                
+                // Calculate Y position based on style
+                let y;
+                if (style.position === 'bottom') {
+                    y = canvas.height - fontSize * 0.9;
+                } else {
+                    y = canvas.height / 2;
+                }
 
                 // Draw text shadow (multiple layers for glow effect)
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
@@ -517,7 +643,7 @@
                 ctx.shadowOffsetY = 4;
 
                 // Draw outline
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.strokeStyle = colors.outline;
                 ctx.lineWidth = fontSize * 0.08;
                 ctx.strokeText(text, x, y);
 
@@ -526,19 +652,21 @@
                     x - fontSize * 2, y - fontSize / 2,
                     x + fontSize * 2, y + fontSize / 2
                 );
-                textGradient.addColorStop(0, '#FFD700');
-                textGradient.addColorStop(0.5, '#FFF8DC');
-                textGradient.addColorStop(1, '#FFD700');
+                textGradient.addColorStop(0, colors.gradient[0]);
+                textGradient.addColorStop(0.5, colors.gradient[1]);
+                textGradient.addColorStop(1, colors.gradient[2]);
                 
                 ctx.fillStyle = textGradient;
                 ctx.shadowBlur = 15;
-                ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
+                ctx.shadowColor = colors.shadow;
                 ctx.fillText(text, x, y);
 
                 // Reset shadow
                 ctx.shadowBlur = 0;
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 0;
+
+                console.log(`Style used: ${style.name} (${style.position})`);
 
                 // Show the result
                 document.getElementById('imageContainer').classList.add('visible');
