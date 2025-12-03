@@ -394,78 +394,18 @@
         // Current selected mood
         let currentMood = 'random';
 
-        // Curated image URLs by mood - using direct Unsplash image URLs (CORS-friendly)
-        const moodImages = {
-            coffee: [
-                'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1512568400610-62da28bc8a13?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&h=600&fit=crop',
-            ],
-            cat: [
-                'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1561948955-570b270e7c36?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1494256997604-768d1f608cac?w=800&h=600&fit=crop',
-            ],
-            dog: [
-                'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1558788353-f76d92427f16?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1534361960057-19889db9621e?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=800&h=600&fit=crop',
-            ],
-            fun: [
-                'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1472162072942-cd5147eb3902?w=800&h=600&fit=crop',
-            ],
-            nature: [
-                'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1505765050516-f72dcac9c60e?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1518173946687-a4c036bc6c9b?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&h=600&fit=crop',
-                'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&h=600&fit=crop',
-            ]
-        };
+        // Pexels API key (free tier)
+        const PEXELS_API_KEY = 'cjiFqLrEF8PYdntvd0XAkZlfarPBOYyUaVLLqYdNdwnyfKLMncl7TWLZ';
 
-        // All images combined for random mode
-        const allImages = [
-            ...moodImages.coffee,
-            ...moodImages.cat,
-            ...moodImages.dog,
-            ...moodImages.fun,
-            ...moodImages.nature
-        ];
+        // Search terms for each mood
+        const moodSearchTerms = {
+            coffee: ['coffee cup', 'latte art', 'morning coffee', 'cappuccino', 'cafe'],
+            cat: ['cute cat', 'kitten', 'cat portrait', 'fluffy cat', 'tabby cat'],
+            dog: ['happy dog', 'cute puppy', 'dog portrait', 'golden retriever', 'playful dog'],
+            fun: ['celebration', 'colorful balloons', 'party confetti', 'happy people', 'festival'],
+            nature: ['sunrise landscape', 'ocean sunset', 'mountain lake', 'forest morning', 'flower field'],
+            random: ['good morning', 'sunrise', 'happy', 'beautiful nature', 'cute animal', 'coffee']
+        };
 
         function selectMood(mood) {
             currentMood = mood;
@@ -475,9 +415,33 @@
             });
         }
 
-        function getImageUrlForMood() {
-            const images = currentMood === 'random' ? allImages : moodImages[currentMood];
-            return images[Math.floor(Math.random() * images.length)];
+        async function fetchRandomImage() {
+            const terms = moodSearchTerms[currentMood];
+            const searchTerm = terms[Math.floor(Math.random() * terms.length)];
+            const randomPage = Math.floor(Math.random() * 10) + 1; // Random page 1-10
+            
+            const response = await fetch(
+                `https://api.pexels.com/v1/search?query=${encodeURIComponent(searchTerm)}&per_page=15&page=${randomPage}`,
+                {
+                    headers: {
+                        'Authorization': PEXELS_API_KEY
+                    }
+                }
+            );
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch from Pexels');
+            }
+            
+            const data = await response.json();
+            
+            if (!data.photos || data.photos.length === 0) {
+                throw new Error('No images found');
+            }
+            
+            // Pick a random photo from results
+            const randomPhoto = data.photos[Math.floor(Math.random() * data.photos.length)];
+            return randomPhoto.src.large; // Returns ~940px wide image
         }
 
         // Text style configurations
@@ -621,8 +585,8 @@
             setLoading(true);
 
             try {
-                // Get image URL based on selected mood
-                const imageUrl = getImageUrlForMood();
+                // Fetch a random image from Pexels based on mood
+                const imageUrl = await fetchRandomImage();
 
                 // Load the image
                 const img = new Image();
