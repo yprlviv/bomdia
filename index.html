@@ -316,28 +316,18 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // Fetch a random image from one of the free APIs
+        // Fetch a random image from CORS-enabled free APIs
         async function fetchRandomImage() {
             const apis = [
-                // Dog CEO API - random dogs
+                // Dog CEO API - random dogs (CORS enabled)
                 async () => {
                     const res = await fetch('https://dog.ceo/api/breeds/image/random');
                     const data = await res.json();
                     return data.message;
                 },
-                // The Cat API - random cats
+                // Picsum - random photos (CORS enabled)
                 async () => {
-                    const res = await fetch('https://api.thecatapi.com/v1/images/search');
-                    const data = await res.json();
-                    return data[0].url;
-                },
-                // Coffee API - random coffee
-                async () => {
-                    return `https://coffee.alexflipnote.dev/random?t=${Date.now()}`;
-                },
-                // Picsum - random photos
-                async () => {
-                    return `https://picsum.photos/800/600?random=${Date.now()}`;
+                    return `https://picsum.photos/800/600?random=${Math.random()}`;
                 }
             ];
 
