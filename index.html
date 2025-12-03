@@ -277,57 +277,6 @@
             opacity: 1;
         }
 
-        /* Mood selector */
-        .mood-selector {
-            margin-bottom: 1.5rem;
-        }
-
-        .mood-label {
-            display: block;
-            font-weight: 600;
-            color: var(--deep-brown);
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-        }
-
-        .mood-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .mood-btn {
-            background: rgba(255, 255, 255, 0.85);
-            border: 2px solid transparent;
-            padding: 0.5rem 1rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--deep-brown);
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Nunito', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .mood-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .mood-btn.active {
-            background: var(--warm-orange);
-            color: white;
-            border-color: var(--soft-coral);
-            box-shadow: 0 4px 15px rgba(255, 140, 66, 0.4);
-        }
-
-        .mood-btn .emoji {
-            font-size: 1.1rem;
-        }
     </style>
 </head>
 <body>
@@ -336,30 +285,6 @@
         <h1>Bom Dia!</h1>
         <p class="subtitle">Generate beautiful morning greetings to share with friends</p>
         
-        <div class="mood-selector">
-            <span class="mood-label">Choose your mood:</span>
-            <div class="mood-buttons">
-                <button class="mood-btn active" data-mood="random" onclick="selectMood('random')">
-                    <span class="emoji">🎲</span> Random
-                </button>
-                <button class="mood-btn" data-mood="coffee" onclick="selectMood('coffee')">
-                    <span class="emoji">☕</span> Coffee
-                </button>
-                <button class="mood-btn" data-mood="cat" onclick="selectMood('cat')">
-                    <span class="emoji">🐱</span> Cat
-                </button>
-                <button class="mood-btn" data-mood="dog" onclick="selectMood('dog')">
-                    <span class="emoji">🐕</span> Dog
-                </button>
-                <button class="mood-btn" data-mood="fun" onclick="selectMood('fun')">
-                    <span class="emoji">🎉</span> Fun
-                </button>
-                <button class="mood-btn" data-mood="nature" onclick="selectMood('nature')">
-                    <span class="emoji">🌿</span> Nature
-                </button>
-            </div>
-        </div>
-
         <button class="generate-btn" id="generateBtn" onclick="generateImage()">
             ✨ Generate Image
         </button>
@@ -391,51 +316,34 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // Current selected mood
-        let currentMood = 'random';
-
-        function selectMood(mood) {
-            currentMood = mood;
-            // Update button states
-            document.querySelectorAll('.mood-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.mood === mood);
-            });
-        }
-
-        // Fetch image URL based on mood using dedicated free APIs
-        async function fetchImageForMood() {
-            const mood = currentMood === 'random' 
-                ? ['dog', 'cat', 'coffee', 'nature', 'fun'][Math.floor(Math.random() * 5)]
-                : currentMood;
-
-            switch (mood) {
-                case 'dog':
-                    // Dog CEO API - free, no key, CORS-enabled, always returns dogs
-                    const dogRes = await fetch('https://dog.ceo/api/breeds/image/random');
-                    const dogData = await dogRes.json();
-                    return dogData.message;
-
-                case 'cat':
-                    // The Cat API - free, no key needed, CORS-enabled
-                    const catRes = await fetch('https://api.thecatapi.com/v1/images/search');
-                    const catData = await catRes.json();
-                    return catData[0].url;
-
-                case 'coffee':
-                    // Coffee API - free, always returns coffee images
+        // Fetch a random image from one of the free APIs
+        async function fetchRandomImage() {
+            const apis = [
+                // Dog CEO API - random dogs
+                async () => {
+                    const res = await fetch('https://dog.ceo/api/breeds/image/random');
+                    const data = await res.json();
+                    return data.message;
+                },
+                // The Cat API - random cats
+                async () => {
+                    const res = await fetch('https://api.thecatapi.com/v1/images/search');
+                    const data = await res.json();
+                    return data[0].url;
+                },
+                // Coffee API - random coffee
+                async () => {
                     return `https://coffee.alexflipnote.dev/random?t=${Date.now()}`;
+                },
+                // Picsum - random photos
+                async () => {
+                    return `https://picsum.photos/800/600?random=${Date.now()}`;
+                }
+            ];
 
-                case 'nature':
-                    // Use LoremFlickr for nature - free, CORS-enabled
-                    return `https://loremflickr.com/800/600/nature,landscape,sunrise,beach,mountain?random=${Date.now()}`;
-
-                case 'fun':
-                    // Use LoremFlickr for fun/colorful images
-                    return `https://loremflickr.com/800/600/party,celebration,colorful,happy,balloons?random=${Date.now()}`;
-
-                default:
-                    return `https://loremflickr.com/800/600/sunrise,morning?random=${Date.now()}`;
-            }
+            // Pick a random API
+            const randomApi = apis[Math.floor(Math.random() * apis.length)];
+            return await randomApi();
         }
 
         // Text style configurations
@@ -579,8 +487,8 @@
             setLoading(true);
 
             try {
-                // Fetch image URL based on selected mood
-                const imageUrl = await fetchImageForMood();
+                // Fetch a random image
+                const imageUrl = await fetchRandomImage();
 
                 // Load the image
                 const img = new Image();
