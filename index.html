@@ -319,12 +319,13 @@
         const UNSPLASH_ACCESS_KEY = 'UmLG3gLbVC_FVByi2knY9tEdF2GoLKSNxBgtNC4OVbc';
         
         // Search terms for positive, fun images (randomly selected each time)
+        // Perfect for "Bom dia" (Good morning) mood! ☀️
         const searchTerms = [
-            // Animals - cute and fun
+            // === 🐕 CUTE ANIMALS ===
             'cute dog',
             'happy dog',
             'funny dog',
-            'puppy',
+            'puppy playing',
             'cute cat',
             'funny cat',
             'kitten',
@@ -332,8 +333,15 @@
             'funny animals',
             'baby animals',
             'adorable pets',
+            'dog smile',
+            'cat sleeping',
+            'fluffy bunny',
+            'cute panda',
+            'happy corgi',
+            'golden retriever',
+            'sleepy puppy',
             
-            // Positive & Fun
+            // === 😊 HAPPINESS & JOY ===
             'happiness',
             'joy',
             'celebration',
@@ -343,39 +351,186 @@
             'colorful',
             'rainbow',
             'smile',
-            'laughing people',
+            'laughing',
             'fun',
             'good vibes',
+            'excited',
+            'jumping joy',
+            'arms raised',
+            'victory',
+            'success',
+            'cheering',
             
-            // Food & Drinks
+            // === ☀️ GOOD MORNING VIBES ===
+            'sunrise',
+            'morning light',
+            'sunrise coffee',
+            'morning yoga',
+            'sunrise beach',
+            'morning run',
+            'waking up happy',
+            'morning stretch',
+            'sunrise mountains',
+            'early morning',
+            'dawn sky',
+            'morning dew',
+            'sunrise clouds',
+            
+            // === ☕ COFFEE & BREAKFAST ===
             'coffee morning',
+            'latte art',
             'breakfast food',
-            'delicious food',
-            'colorful food',
+            'pancakes breakfast',
             'fresh fruits',
-            'dessert',
-            'ice cream',
-            'donuts',
-            'cupcakes',
             'smoothie bowl',
+            'avocado toast',
+            'croissant coffee',
+            'breakfast bed',
+            'brunch',
+            'orange juice',
+            'eggs breakfast',
+            'cozy coffee',
             
-            // Nature positivity
-            'sunrise landscape',
-            'beautiful sunset',
+            // === 🍩 YUMMY TREATS ===
+            'donuts colorful',
+            'cupcakes',
+            'ice cream',
+            'macarons',
+            'chocolate',
+            'cookies',
+            'cake slice',
+            'waffles',
+            'fruit bowl',
+            'berries',
+            
+            // === 🌸 NATURE & FLOWERS ===
             'colorful flowers',
             'sunflower field',
             'cherry blossom',
             'spring flowers',
             'tropical beach',
             'beautiful nature',
-            'golden hour light',
+            'golden hour',
+            'flower garden',
+            'tulips',
+            'roses bouquet',
+            'lavender field',
+            'daisy flowers',
+            'wildflowers',
+            'blooming',
             
-            // Cozy & Warm
+            // === 🏖️ VACATION & RELAXATION ===
+            'tropical paradise',
+            'beach vacation',
+            'hammock beach',
+            'pool relaxing',
+            'palm trees',
+            'ocean waves',
+            'sunny day',
+            'summer vibes',
+            'vacation happy',
+            'resort pool',
+            
+            // === 🛋️ COZY & WARM ===
             'cozy home',
             'hygge',
-            'warm coffee',
+            'warm blanket',
             'fairy lights',
             'cozy candles',
+            'reading book',
+            'cozy bedroom',
+            'rainy window cozy',
+            'fireplace cozy',
+            'soft pillows',
+            
+            // === 🎉 FUN & PLAYFUL ===
+            'bubbles',
+            'glitter',
+            'sparkles',
+            'fireworks',
+            'disco ball',
+            'neon lights',
+            'carnival',
+            'ferris wheel',
+            'cotton candy',
+            'amusement park',
+            'playground',
+            'swinging',
+            
+            // === 🌈 COLORFUL & ARTISTIC ===
+            'colorful abstract',
+            'paint splash',
+            'watercolor',
+            'street art colorful',
+            'graffiti art',
+            'color explosion',
+            'tie dye',
+            'prism rainbow',
+            'colored smoke',
+            'holographic',
+            
+            // === 💪 MOTIVATION & ENERGY ===
+            'motivation',
+            'energy',
+            'workout happy',
+            'running sunrise',
+            'yoga sunrise',
+            'meditation peaceful',
+            'stretching morning',
+            'fitness happy',
+            'healthy lifestyle',
+            'new day',
+            
+            // === 🎈 WHIMSICAL & DREAMY ===
+            'hot air balloon',
+            'dreamy clouds',
+            'starry sky',
+            'magical forest',
+            'fairy tale',
+            'unicorn',
+            'cotton clouds',
+            'pastel sky',
+            'dreamy landscape',
+            'fantasy',
+            
+            // === 👨‍👩‍👧‍👦 FRIENDSHIP & LOVE ===
+            'friends laughing',
+            'best friends',
+            'family happy',
+            'hugging',
+            'holding hands',
+            'picnic friends',
+            'road trip friends',
+            'group selfie',
+            'couple happy',
+            'friendship',
+            
+            // === 🎵 MUSIC & DANCE ===
+            'dancing happy',
+            'music festival',
+            'headphones happy',
+            'singing',
+            'guitar playing',
+            'concert crowd',
+            'dancing sunset',
+            
+            // === 🐣 BABY & CUTE THINGS ===
+            'baby laughing',
+            'baby animals',
+            'teddy bear',
+            'cute plush',
+            'baby shoes',
+            'nursery cute',
+            
+            // === 🍦 SUMMER FUN ===
+            'ice cream cone',
+            'popsicle',
+            'watermelon summer',
+            'sunglasses fun',
+            'beach ball',
+            'surfing',
+            'swimming pool',
+            'sprinkler fun',
         ];
 
         // Text style configurations - ALL positioned at BOTTOM
