@@ -276,6 +276,58 @@
             transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
+
+        /* Mood selector */
+        .mood-selector {
+            margin-bottom: 1.5rem;
+        }
+
+        .mood-label {
+            display: block;
+            font-weight: 600;
+            color: var(--deep-brown);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .mood-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .mood-btn {
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid transparent;
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--deep-brown);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Nunito', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .mood-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .mood-btn.active {
+            background: var(--warm-orange);
+            color: white;
+            border-color: var(--soft-coral);
+            box-shadow: 0 4px 15px rgba(255, 140, 66, 0.4);
+        }
+
+        .mood-btn .emoji {
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
@@ -284,6 +336,30 @@
         <h1>Bom Dia!</h1>
         <p class="subtitle">Generate beautiful morning greetings to share with friends</p>
         
+        <div class="mood-selector">
+            <span class="mood-label">Choose your mood:</span>
+            <div class="mood-buttons">
+                <button class="mood-btn active" data-mood="random" onclick="selectMood('random')">
+                    <span class="emoji">🎲</span> Random
+                </button>
+                <button class="mood-btn" data-mood="coffee" onclick="selectMood('coffee')">
+                    <span class="emoji">☕</span> Coffee
+                </button>
+                <button class="mood-btn" data-mood="cat" onclick="selectMood('cat')">
+                    <span class="emoji">🐱</span> Cat
+                </button>
+                <button class="mood-btn" data-mood="dog" onclick="selectMood('dog')">
+                    <span class="emoji">🐕</span> Dog
+                </button>
+                <button class="mood-btn" data-mood="fun" onclick="selectMood('fun')">
+                    <span class="emoji">🎉</span> Fun
+                </button>
+                <button class="mood-btn" data-mood="nature" onclick="selectMood('nature')">
+                    <span class="emoji">🌿</span> Nature
+                </button>
+            </div>
+        </div>
+
         <button class="generate-btn" id="generateBtn" onclick="generateImage()">
             ✨ Generate Image
         </button>
@@ -315,121 +391,159 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // PRIORITY: Animals, positivity, fun images (appear 3x more often)
-        const priorityImageIds = [
-            // Animals - cute and fun
-            237,  // Dog
-            219,  // Dog in nature
-            200,  // Dog
-            169,  // Dog
-            1025, // Pug
-            1062, // Dog
-            1074, // Cat
-            1084, // Cat
-            40,   // Dog on beach
-            177,  // Dog
-            433,  // Deer
-            582,  // Bird
-            593,  // Butterfly
-            659,  // Horse
-            783,  // Dog
-            837,  // Dog
-            1024, // Dog
-            1039, // Cat
-            1047, // Cat
-            1053, // Dog
-            1061, // Dog
-            1069, // Dog
-            // Fun & Positive vibes
-            22,   // Coffee fun
-            68,   // Coffee morning
-            225,  // Balloons celebration
-            318,  // Colorful
-            326,  // Fun colors
-            370,  // Celebration
-            399,  // Happy colors
-            403,  // Bright positive
-            452,  // Fun scene
-            500,  // Positive vibes
-            532,  // Cheerful
-            564,  // Bright happy
-            609,  // Fun outdoor
-            658,  // Joyful
-            688,  // Happy scene
-            719,  // Positive energy
-            755,  // Fun moment
-            866,  // Cheerful scene
-            901,  // Happy vibes
-            984,  // Positive
+        // Current selected mood
+        let currentMood = 'random';
+
+        // Image collections by mood
+        const moodImages = {
+            coffee: [
+                15,   // Coffee on wooden table
+                22,   // Coffee scene
+                68,   // Coffee morning
+                63,   // Coffee cup
+                225,  // Cafe vibes
+                312,  // Coffee beans
+                425,  // Latte art
+                429,  // Morning coffee
+                431,  // Coffee shop
+                766,  // Espresso
+                901,  // Coffee break
+                946,  // Cappuccino
+            ],
+            cat: [
+                1074, // Cat
+                1084, // Cat
+                1039, // Cat
+                1047, // Cat
+                40,   // Cute cat
+                96,   // Sleepy cat
+                127,  // Cat portrait
+                169,  // Cat relaxing
+                237,  // Kitty
+                295,  // Cat eyes
+                593,  // Cat stretch
+            ],
+            dog: [
+                237,  // Dog
+                219,  // Dog in nature
+                200,  // Dog
+                169,  // Dog
+                1025, // Pug
+                1062, // Dog
+                40,   // Dog on beach
+                177,  // Dog
+                783,  // Dog
+                837,  // Dog
+                1024, // Dog
+                1053, // Dog
+                1061, // Dog
+                1069, // Dog
+                659,  // Dog running
+            ],
+            fun: [
+                225,  // Balloons celebration
+                318,  // Colorful
+                326,  // Fun colors
+                370,  // Celebration
+                399,  // Happy colors
+                403,  // Bright positive
+                452,  // Fun scene
+                500,  // Positive vibes
+                532,  // Cheerful
+                564,  // Bright happy
+                609,  // Fun outdoor
+                658,  // Joyful
+                688,  // Happy scene
+                719,  // Positive energy
+                755,  // Fun moment
+                866,  // Cheerful scene
+                901,  // Happy vibes
+                984,  // Positive
+                433,  // Party
+                582,  // Colorful birds
+            ],
+            nature: [
+                15,   // Nature morning
+                16,   // Beach waves
+                18,   // Forest path
+                20,   // Beach sunset
+                27,   // Sea waves
+                28,   // Mountain lake
+                29,   // Forest
+                36,   // Beach
+                39,   // Sunset landscape
+                47,   // Wheat field
+                48,   // Mountain
+                49,   // Sunset
+                54,   // Flowers
+                56,   // Beach rocks
+                58,   // Nature path
+                59,   // Foggy forest
+                65,   // Lavender field
+                66,   // Mountain road
+                69,   // Mountain lake
+                73,   // Green nature
+                76,   // Sunset sky
+                82,   // Beach sunset
+                84,   // Foggy mountains
+                89,   // Mountain peaks
+                90,   // Autumn leaves
+                91,   // Ocean waves
+                96,   // Sunrise clouds
+                100,  // Mountains
+                103,  // Sunset beach
+                106,  // Sunrise
+                110,  // Forest
+                114,  // Mountain landscape
+                118,  // Green hills
+                119,  // Tropical beach
+                129,  // Autumn forest
+                135,  // Waterfall
+                136,  // Beach sunset
+                142,  // Mountain lake
+                152,  // Sunset colors
+                155,  // Nature green
+                158,  // Mountain
+                164,  // Flowers
+                165,  // Beach
+                167,  // Forest path
+                168,  // Sunset
+                173,  // Green nature
+                178,  // Mountain
+                180,  // Sunset
+                182,  // Flowers
+                184,  // Landscape
+                185,  // Ocean
+                186,  // Forest
+                190,  // Beach
+                193,  // Mountain
+                195,  // Nature
+                197,  // Sunset
+            ]
+        };
+
+        // Combined list for random mode (all images)
+        const allImages = [
+            ...moodImages.coffee,
+            ...moodImages.cat,
+            ...moodImages.dog,
+            ...moodImages.fun,
+            ...moodImages.fun, // Fun appears twice for priority
+            ...moodImages.nature
         ];
 
-        // Secondary: Nature, landscapes, morning vibes
-        const secondaryImageIds = [
-            15,   // Coffee on wooden table
-            16,   // Beach waves
-            18,   // Forest path
-            20,   // Beach sunset
-            27,   // Sea waves
-            28,   // Mountain lake
-            29,   // Forest
-            36,   // Beach
-            39,   // Sunset landscape
-            47,   // Wheat field
-            48,   // Mountain
-            49,   // Sunset
-            54,   // Flowers
-            56,   // Beach rocks
-            58,   // Nature path
-            59,   // Foggy forest
-            65,   // Lavender field
-            66,   // Mountain road
-            69,   // Mountain lake
-            73,   // Green nature
-            76,   // Sunset sky
-            82,   // Beach sunset
-            84,   // Foggy mountains
-            89,   // Mountain peaks
-            90,   // Autumn leaves
-            91,   // Ocean waves
-            96,   // Sunrise clouds
-            100,  // Mountains
-            103,  // Sunset beach
-            106,  // Sunrise
-            110,  // Forest
-            114,  // Mountain landscape
-            118,  // Green hills
-            119,  // Tropical beach
-            129,  // Autumn forest
-            135,  // Waterfall
-            136,  // Beach sunset
-            142,  // Mountain lake
-            152,  // Sunset colors
-            155,  // Nature green
-            158,  // Mountain
-            164,  // Flowers
-            165,  // Beach
-            167,  // Forest path
-            168,  // Sunset
-            173,  // Green nature
-            178,  // Mountain
-            180,  // Sunset
-            182,  // Flowers
-            184,  // Landscape
-            185,  // Ocean
-            186,  // Forest
-            190,  // Beach
-            193,  // Mountain
-            195,  // Nature
-            197,  // Sunset
-        ];
+        function selectMood(mood) {
+            currentMood = mood;
+            // Update button states
+            document.querySelectorAll('.mood-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mood === mood);
+            });
+        }
 
-        // Combined list with priority images appearing 3x more often
-        const beautifulImageIds = [
-            ...priorityImageIds,
-            ...priorityImageIds,
-            ...priorityImageIds,
-            ...secondaryImageIds
-        ];
+        function getImageIdForMood() {
+            const images = currentMood === 'random' ? allImages : moodImages[currentMood];
+            return images[Math.floor(Math.random() * images.length)];
+        }
 
         // Text style configurations
         const textStyles = [
@@ -572,8 +686,8 @@
             setLoading(true);
 
             try {
-                // Pick a random image ID from our curated list
-                const imageId = beautifulImageIds[Math.floor(Math.random() * beautifulImageIds.length)];
+                // Pick a random image ID based on selected mood
+                const imageId = getImageIdForMood();
                 
                 // Use Picsum Photos - reliable, free, CORS-enabled
                 const imageUrl = `https://picsum.photos/id/${imageId}/800/600`;
