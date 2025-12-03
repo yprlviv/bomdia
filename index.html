@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bom Dia Generator ☀️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sunrise-gold: #FFB347;
+            --warm-orange: #FF8C42;
+            --soft-coral: #FF6B6B;
+            --sky-blue: #87CEEB;
+            --morning-pink: #FFB5C5;
+            --cream: #FFF8E7;
+            --deep-brown: #5D4037;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, 
+                var(--morning-pink) 0%, 
+                var(--sunrise-gold) 25%, 
+                var(--warm-orange) 50%, 
+                var(--sky-blue) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            color: var(--cream);
+            text-shadow: 3px 3px 6px rgba(93, 64, 55, 0.4);
+            margin-bottom: 0.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--deep-brown);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .sun-icon {
+            font-size: 4rem;
+            animation: spin 20s linear infinite, pulse 2s ease-in-out infinite;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, var(--warm-orange), var(--soft-coral));
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            font-family: 'Nunito', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .generate-btn:hover::before {
+            left: 100%;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.5);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .image-container {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 60px rgba(93, 64, 55, 0.2);
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .image-container.visible {
+            display: block;
+        }
+
+        #resultCanvas {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .copy-btn {
+            margin-top: 1.5rem;
+            background: linear-gradient(135deg, var(--sky-blue), #5BA3C6);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(91, 163, 198, 0.4);
+            font-family: 'Nunito', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(91, 163, 198, 0.5);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+
+        .loading {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid var(--cream);
+            border-top: 5px solid var(--warm-orange);
+            border-radius: 50%;
+            animation: spinLoader 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spinLoader {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--deep-brown);
+            font-weight: 600;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .credits {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: var(--deep-brown);
+            opacity: 0.7;
+        }
+
+        .credits a {
+            color: var(--deep-brown);
+        }
+
+        .footer {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(93, 64, 55, 0.2);
+            font-size: 0.9rem;
+            color: var(--deep-brown);
+            font-weight: 600;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--deep-brown);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sun-icon">☀️</div>
+        <h1>Bom Dia!</h1>
+        <p class="subtitle">Generate beautiful morning greetings to share with friends</p>
+        
+        <button class="generate-btn" id="generateBtn" onclick="generateImage()">
+            ✨ Generate Image
+        </button>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Finding the perfect sunrise...</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="image-container" id="imageContainer">
+            <canvas id="resultCanvas"></canvas>
+            <br>
+            <button class="copy-btn" id="copyBtn" onclick="copyImage()">
+                📋 Copy Image
+            </button>
+        </div>
+
+        <p class="credits">
+            Images from <a href="https://picsum.photos" target="_blank">Lorem Picsum</a>
+        </p>
+
+        <footer class="footer">
+            © 2025. Created with Cursor AI, for all the positive team.blue people.
+        </footer>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // PRIORITY: Animals, positivity, fun images (appear 3x more often)
+        const priorityImageIds = [
+            // Animals - cute and fun
+            237,  // Dog
+            219,  // Dog in nature
+            200,  // Dog
+            169,  // Dog
+            1025, // Pug
+            1062, // Dog
+            1074, // Cat
+            1084, // Cat
+            40,   // Dog on beach
+            177,  // Dog
+            433,  // Deer
+            582,  // Bird
+            593,  // Butterfly
+            659,  // Horse
+            783,  // Dog
+            837,  // Dog
+            1024, // Dog
+            1039, // Cat
+            1047, // Cat
+            1053, // Dog
+            1061, // Dog
+            1069, // Dog
+            // Fun & Positive vibes
+            22,   // Coffee fun
+            68,   // Coffee morning
+            225,  // Balloons celebration
+            318,  // Colorful
+            326,  // Fun colors
+            370,  // Celebration
+            399,  // Happy colors
+            403,  // Bright positive
+            452,  // Fun scene
+            500,  // Positive vibes
+            532,  // Cheerful
+            564,  // Bright happy
+            609,  // Fun outdoor
+            658,  // Joyful
+            688,  // Happy scene
+            719,  // Positive energy
+            755,  // Fun moment
+            866,  // Cheerful scene
+            901,  // Happy vibes
+            984,  // Positive
+        ];
+
+        // Secondary: Nature, landscapes, morning vibes
+        const secondaryImageIds = [
+            15,   // Coffee on wooden table
+            16,   // Beach waves
+            18,   // Forest path
+            20,   // Beach sunset
+            27,   // Sea waves
+            28,   // Mountain lake
+            29,   // Forest
+            36,   // Beach
+            39,   // Sunset landscape
+            47,   // Wheat field
+            48,   // Mountain
+            49,   // Sunset
+            54,   // Flowers
+            56,   // Beach rocks
+            58,   // Nature path
+            59,   // Foggy forest
+            65,   // Lavender field
+            66,   // Mountain road
+            69,   // Mountain lake
+            73,   // Green nature
+            76,   // Sunset sky
+            82,   // Beach sunset
+            84,   // Foggy mountains
+            89,   // Mountain peaks
+            90,   // Autumn leaves
+            91,   // Ocean waves
+            96,   // Sunrise clouds
+            100,  // Mountains
+            103,  // Sunset beach
+            106,  // Sunrise
+            110,  // Forest
+            114,  // Mountain landscape
+            118,  // Green hills
+            119,  // Tropical beach
+            129,  // Autumn forest
+            135,  // Waterfall
+            136,  // Beach sunset
+            142,  // Mountain lake
+            152,  // Sunset colors
+            155,  // Nature green
+            158,  // Mountain
+            164,  // Flowers
+            165,  // Beach
+            167,  // Forest path
+            168,  // Sunset
+            173,  // Green nature
+            178,  // Mountain
+            180,  // Sunset
+            182,  // Flowers
+            184,  // Landscape
+            185,  // Ocean
+            186,  // Forest
+            190,  // Beach
+            193,  // Mountain
+            195,  // Nature
+            197,  // Sunset
+        ];
+
+        // Combined list with priority images appearing 3x more often
+        const beautifulImageIds = [
+            ...priorityImageIds,
+            ...priorityImageIds,
+            ...priorityImageIds,
+            ...secondaryImageIds
+        ];
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
+
+        function setLoading(isLoading) {
+            const btn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const imageContainer = document.getElementById('imageContainer');
+            const errorMessage = document.getElementById('errorMessage');
+
+            btn.disabled = isLoading;
+            btn.textContent = isLoading ? '⏳ Generating...' : '✨ Generate Image';
+            loading.classList.toggle('visible', isLoading);
+            
+            if (isLoading) {
+                imageContainer.classList.remove('visible');
+                errorMessage.classList.remove('visible');
+            }
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.classList.add('visible');
+        }
+
+        async function generateImage() {
+            setLoading(true);
+
+            try {
+                // Pick a random image ID from our curated list
+                const imageId = beautifulImageIds[Math.floor(Math.random() * beautifulImageIds.length)];
+                
+                // Use Picsum Photos - reliable, free, CORS-enabled
+                const imageUrl = `https://picsum.photos/id/${imageId}/800/600`;
+
+                // Load the image
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = () => reject(new Error('Failed to load image'));
+                    img.src = imageUrl;
+                });
+
+                // Create canvas and draw image with text
+                const canvas = document.getElementById('resultCanvas');
+                const ctx = canvas.getContext('2d');
+
+                // Set canvas size to match image
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // Draw the image
+                ctx.drawImage(img, 0, 0);
+
+                // Add a subtle gradient overlay for better text visibility
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, 'rgba(0, 0, 0, 0.1)');
+                gradient.addColorStop(0.4, 'rgba(0, 0, 0, 0)');
+                gradient.addColorStop(0.6, 'rgba(0, 0, 0, 0)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0.2)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Configure text style
+                const fontSize = Math.min(canvas.width, canvas.height) * 0.15;
+                ctx.font = `bold ${fontSize}px Pacifico, cursive`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                const text = 'Bom dia';
+                const x = canvas.width / 2;
+                const y = canvas.height / 2;
+
+                // Draw text shadow (multiple layers for glow effect)
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetX = 4;
+                ctx.shadowOffsetY = 4;
+
+                // Draw outline
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.lineWidth = fontSize * 0.08;
+                ctx.strokeText(text, x, y);
+
+                // Draw main text with gradient
+                const textGradient = ctx.createLinearGradient(
+                    x - fontSize * 2, y - fontSize / 2,
+                    x + fontSize * 2, y + fontSize / 2
+                );
+                textGradient.addColorStop(0, '#FFD700');
+                textGradient.addColorStop(0.5, '#FFF8DC');
+                textGradient.addColorStop(1, '#FFD700');
+                
+                ctx.fillStyle = textGradient;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
+                ctx.fillText(text, x, y);
+
+                // Reset shadow
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+
+                // Show the result
+                document.getElementById('imageContainer').classList.add('visible');
+                document.getElementById('copyBtn').classList.remove('copied');
+                document.getElementById('copyBtn').innerHTML = '📋 Copy Image';
+
+                showToast('🌅 Image generated successfully!');
+
+            } catch (error) {
+                console.error('Error generating image:', error);
+                showError('Oops! Failed to generate image. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function copyImage() {
+            const canvas = document.getElementById('resultCanvas');
+            const copyBtn = document.getElementById('copyBtn');
+
+            try {
+                // Convert canvas to blob
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                
+                // Use Clipboard API to copy image
+                await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+
+                // Update button state
+                copyBtn.classList.add('copied');
+                copyBtn.innerHTML = '✅ Copied!';
+                
+                showToast('📋 Image copied! Paste it in Slack');
+
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyBtn.innerHTML = '📋 Copy Image';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error copying image:', error);
+                
+                // Fallback: try to download the image instead
+                try {
+                    const link = document.createElement('a');
+                    link.download = 'bom-dia.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    showToast('📥 Image downloaded (copy not supported in this browser)');
+                } catch (downloadError) {
+                    showToast('❌ Could not copy image. Try right-click → Copy Image');
+                }
+            }
+        }
+
+        // Generate an image on page load for immediate gratification
+        window.addEventListener('load', () => {
+            // Small delay to let fonts load
+            setTimeout(generateImage, 500);
+        });
+    </script>
+</body>
+</html>
+
