@@ -394,141 +394,76 @@
         // Current selected mood
         let currentMood = 'random';
 
-        // Image collections by mood
+        // Curated image URLs by mood - using direct Unsplash image URLs (CORS-friendly)
         const moodImages = {
             coffee: [
-                15,   // Coffee on wooden table
-                22,   // Coffee scene
-                68,   // Coffee morning
-                63,   // Coffee cup
-                225,  // Cafe vibes
-                312,  // Coffee beans
-                425,  // Latte art
-                429,  // Morning coffee
-                431,  // Coffee shop
-                766,  // Espresso
-                901,  // Coffee break
-                946,  // Cappuccino
+                'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1512568400610-62da28bc8a13?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=800&h=600&fit=crop',
             ],
             cat: [
-                1074, // Cat
-                1084, // Cat
-                1039, // Cat
-                1047, // Cat
-                40,   // Cute cat
-                96,   // Sleepy cat
-                127,  // Cat portrait
-                169,  // Cat relaxing
-                237,  // Kitty
-                295,  // Cat eyes
-                593,  // Cat stretch
+                'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1561948955-570b270e7c36?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1494256997604-768d1f608cac?w=800&h=600&fit=crop',
             ],
             dog: [
-                237,  // Dog
-                219,  // Dog in nature
-                200,  // Dog
-                169,  // Dog
-                1025, // Pug
-                1062, // Dog
-                40,   // Dog on beach
-                177,  // Dog
-                783,  // Dog
-                837,  // Dog
-                1024, // Dog
-                1053, // Dog
-                1061, // Dog
-                1069, // Dog
-                659,  // Dog running
+                'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1517849845537-4d257902454a?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1558788353-f76d92427f16?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1534361960057-19889db9621e?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=800&h=600&fit=crop',
             ],
             fun: [
-                225,  // Balloons celebration
-                318,  // Colorful
-                326,  // Fun colors
-                370,  // Celebration
-                399,  // Happy colors
-                403,  // Bright positive
-                452,  // Fun scene
-                500,  // Positive vibes
-                532,  // Cheerful
-                564,  // Bright happy
-                609,  // Fun outdoor
-                658,  // Joyful
-                688,  // Happy scene
-                719,  // Positive energy
-                755,  // Fun moment
-                866,  // Cheerful scene
-                901,  // Happy vibes
-                984,  // Positive
-                433,  // Party
-                582,  // Colorful birds
+                'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1496024840928-4c417adf211d?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1472162072942-cd5147eb3902?w=800&h=600&fit=crop',
             ],
             nature: [
-                15,   // Nature morning
-                16,   // Beach waves
-                18,   // Forest path
-                20,   // Beach sunset
-                27,   // Sea waves
-                28,   // Mountain lake
-                29,   // Forest
-                36,   // Beach
-                39,   // Sunset landscape
-                47,   // Wheat field
-                48,   // Mountain
-                49,   // Sunset
-                54,   // Flowers
-                56,   // Beach rocks
-                58,   // Nature path
-                59,   // Foggy forest
-                65,   // Lavender field
-                66,   // Mountain road
-                69,   // Mountain lake
-                73,   // Green nature
-                76,   // Sunset sky
-                82,   // Beach sunset
-                84,   // Foggy mountains
-                89,   // Mountain peaks
-                90,   // Autumn leaves
-                91,   // Ocean waves
-                96,   // Sunrise clouds
-                100,  // Mountains
-                103,  // Sunset beach
-                106,  // Sunrise
-                110,  // Forest
-                114,  // Mountain landscape
-                118,  // Green hills
-                119,  // Tropical beach
-                129,  // Autumn forest
-                135,  // Waterfall
-                136,  // Beach sunset
-                142,  // Mountain lake
-                152,  // Sunset colors
-                155,  // Nature green
-                158,  // Mountain
-                164,  // Flowers
-                165,  // Beach
-                167,  // Forest path
-                168,  // Sunset
-                173,  // Green nature
-                178,  // Mountain
-                180,  // Sunset
-                182,  // Flowers
-                184,  // Landscape
-                185,  // Ocean
-                186,  // Forest
-                190,  // Beach
-                193,  // Mountain
-                195,  // Nature
-                197,  // Sunset
+                'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1505765050516-f72dcac9c60e?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1518173946687-a4c036bc6c9b?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&h=600&fit=crop',
             ]
         };
 
-        // Combined list for random mode (all images)
+        // All images combined for random mode
         const allImages = [
             ...moodImages.coffee,
             ...moodImages.cat,
             ...moodImages.dog,
             ...moodImages.fun,
-            ...moodImages.fun, // Fun appears twice for priority
             ...moodImages.nature
         ];
 
@@ -540,7 +475,7 @@
             });
         }
 
-        function getImageIdForMood() {
+        function getImageUrlForMood() {
             const images = currentMood === 'random' ? allImages : moodImages[currentMood];
             return images[Math.floor(Math.random() * images.length)];
         }
@@ -686,11 +621,8 @@
             setLoading(true);
 
             try {
-                // Pick a random image ID based on selected mood
-                const imageId = getImageIdForMood();
-                
-                // Use Picsum Photos - reliable, free, CORS-enabled
-                const imageUrl = `https://picsum.photos/id/${imageId}/800/600`;
+                // Get image URL based on selected mood
+                const imageUrl = getImageUrlForMood();
 
                 // Load the image
                 const img = new Image();
