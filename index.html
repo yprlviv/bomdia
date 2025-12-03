@@ -276,7 +276,6 @@
             transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
-
     </style>
 </head>
 <body>
@@ -316,32 +315,130 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // Fetch a random image from CORS-enabled free APIs
-        async function fetchRandomImage() {
-            const apis = [
-                // Dog CEO API - random dogs (CORS enabled)
-                async () => {
-                    const res = await fetch('https://dog.ceo/api/breeds/image/random');
-                    const data = await res.json();
-                    return data.message;
-                },
-                // Picsum - random photos (CORS enabled)
-                async () => {
-                    return `https://picsum.photos/800/600?random=${Math.random()}`;
-                }
-            ];
+        // PRIORITY: Animals, positivity, fun images (appear 3x more often)
+        const priorityImageIds = [
+            // Animals - cute and fun
+            237,  // Dog
+            219,  // Dog in nature
+            200,  // Dog
+            169,  // Dog
+            1025, // Pug
+            1062, // Dog
+            1074, // Cat
+            1084, // Cat
+            40,   // Dog on beach
+            177,  // Dog
+            433,  // Deer
+            582,  // Bird
+            593,  // Butterfly
+            659,  // Horse
+            783,  // Dog
+            837,  // Dog
+            1024, // Dog
+            1039, // Cat
+            1047, // Cat
+            1053, // Dog
+            1061, // Dog
+            1069, // Dog
+            // Fun & Positive vibes
+            22,   // Coffee fun
+            68,   // Coffee morning
+            225,  // Balloons celebration
+            318,  // Colorful
+            326,  // Fun colors
+            370,  // Celebration
+            399,  // Happy colors
+            403,  // Bright positive
+            452,  // Fun scene
+            500,  // Positive vibes
+            532,  // Cheerful
+            564,  // Bright happy
+            609,  // Fun outdoor
+            658,  // Joyful
+            688,  // Happy scene
+            719,  // Positive energy
+            755,  // Fun moment
+            866,  // Cheerful scene
+            901,  // Happy vibes
+            984,  // Positive
+        ];
 
-            // Pick a random API
-            const randomApi = apis[Math.floor(Math.random() * apis.length)];
-            return await randomApi();
-        }
+        // Secondary: Nature, landscapes, morning vibes
+        const secondaryImageIds = [
+            15,   // Coffee on wooden table
+            16,   // Beach waves
+            18,   // Forest path
+            20,   // Beach sunset
+            27,   // Sea waves
+            28,   // Mountain lake
+            29,   // Forest
+            36,   // Beach
+            39,   // Sunset landscape
+            47,   // Wheat field
+            48,   // Mountain
+            49,   // Sunset
+            54,   // Flowers
+            56,   // Beach rocks
+            58,   // Nature path
+            59,   // Foggy forest
+            65,   // Lavender field
+            66,   // Mountain road
+            69,   // Mountain lake
+            73,   // Green nature
+            76,   // Sunset sky
+            82,   // Beach sunset
+            84,   // Foggy mountains
+            89,   // Mountain peaks
+            90,   // Autumn leaves
+            91,   // Ocean waves
+            96,   // Sunrise clouds
+            100,  // Mountains
+            103,  // Sunset beach
+            106,  // Sunrise
+            110,  // Forest
+            114,  // Mountain landscape
+            118,  // Green hills
+            119,  // Tropical beach
+            129,  // Autumn forest
+            135,  // Waterfall
+            136,  // Beach sunset
+            142,  // Mountain lake
+            152,  // Sunset colors
+            155,  // Nature green
+            158,  // Mountain
+            164,  // Flowers
+            165,  // Beach
+            167,  // Forest path
+            168,  // Sunset
+            173,  // Green nature
+            178,  // Mountain
+            180,  // Sunset
+            182,  // Flowers
+            184,  // Landscape
+            185,  // Ocean
+            186,  // Forest
+            190,  // Beach
+            193,  // Mountain
+            195,  // Nature
+            197,  // Sunset
+        ];
 
-        // Text style configurations
+        // Combined list with priority images appearing 3x more often
+        const beautifulImageIds = [
+            ...priorityImageIds,
+            ...priorityImageIds,
+            ...priorityImageIds,
+            ...secondaryImageIds
+        ];
+
+        // Text style configurations with more variety
         const textStyles = [
+            // === PACIFICO STYLES (Script/Cursive) ===
             {
                 name: 'Golden Sunrise',
                 position: 'center',
                 font: 'Pacifico',
+                effect: 'glow',
                 getColors: () => ({
                     gradient: ['#FFD700', '#FFF8DC', '#FFD700'],
                     shadow: 'rgba(255, 215, 0, 0.5)',
@@ -352,6 +449,7 @@
                 name: 'Ocean Blue',
                 position: 'bottom',
                 font: 'Pacifico',
+                effect: 'glow',
                 getColors: () => ({
                     gradient: ['#00CED1', '#E0FFFF', '#00CED1'],
                     shadow: 'rgba(0, 206, 209, 0.6)',
@@ -362,6 +460,7 @@
                 name: 'Rose Pink',
                 position: 'center',
                 font: 'Pacifico',
+                effect: 'glow',
                 getColors: () => ({
                     gradient: ['#FF69B4', '#FFB6C1', '#FF69B4'],
                     shadow: 'rgba(255, 105, 180, 0.5)',
@@ -372,9 +471,10 @@
                 name: 'Pure White',
                 position: 'bottom',
                 font: 'Pacifico',
+                effect: 'shadow',
                 getColors: () => ({
                     gradient: ['#FFFFFF', '#F0F0F0', '#FFFFFF'],
-                    shadow: 'rgba(255, 255, 255, 0.8)',
+                    shadow: 'rgba(0, 0, 0, 0.9)',
                     outline: 'rgba(0, 0, 0, 0.7)'
                 })
             },
@@ -382,16 +482,20 @@
                 name: 'Sunset Orange',
                 position: 'center',
                 font: 'Pacifico',
+                effect: 'glow',
                 getColors: () => ({
                     gradient: ['#FF6347', '#FFA07A', '#FF6347'],
                     shadow: 'rgba(255, 99, 71, 0.6)',
                     outline: 'rgba(50, 20, 10, 0.6)'
                 })
             },
+            
+            // === NUNITO STYLES (Modern Sans-Serif) ===
             {
                 name: 'Mint Fresh',
                 position: 'bottom',
-                font: 'Pacifico',
+                font: 'Nunito',
+                effect: 'solid',
                 getColors: () => ({
                     gradient: ['#98FB98', '#F0FFF0', '#98FB98'],
                     shadow: 'rgba(152, 251, 152, 0.6)',
@@ -401,7 +505,8 @@
             {
                 name: 'Royal Purple',
                 position: 'center',
-                font: 'Pacifico',
+                font: 'Nunito',
+                effect: 'glow',
                 getColors: () => ({
                     gradient: ['#9370DB', '#E6E6FA', '#9370DB'],
                     shadow: 'rgba(147, 112, 219, 0.6)',
@@ -411,17 +516,19 @@
             {
                 name: 'Warm Coral',
                 position: 'bottom',
-                font: 'Pacifico',
+                font: 'Nunito',
+                effect: 'shadow',
                 getColors: () => ({
                     gradient: ['#FF7F50', '#FFDAB9', '#FF7F50'],
-                    shadow: 'rgba(255, 127, 80, 0.6)',
+                    shadow: 'rgba(0, 0, 0, 0.8)',
                     outline: 'rgba(60, 30, 20, 0.6)'
                 })
             },
             {
                 name: 'Sky Cyan',
                 position: 'center',
-                font: 'Pacifico',
+                font: 'Nunito',
+                effect: 'solid',
                 getColors: () => ({
                     gradient: ['#87CEEB', '#F0FFFF', '#87CEEB'],
                     shadow: 'rgba(135, 206, 235, 0.6)',
@@ -431,11 +538,185 @@
             {
                 name: 'Lemon Yellow',
                 position: 'bottom',
-                font: 'Pacifico',
+                font: 'Nunito',
+                effect: 'glow',
                 getColors: () => ({
                     gradient: ['#FFFF00', '#FFFACD', '#FFFF00'],
                     shadow: 'rgba(255, 255, 0, 0.6)',
                     outline: 'rgba(60, 60, 0, 0.7)'
+                })
+            },
+            
+            // === GEORGIA STYLES (Classic Serif) ===
+            {
+                name: 'Classic Gold',
+                position: 'center',
+                font: 'Georgia',
+                effect: 'emboss',
+                getColors: () => ({
+                    gradient: ['#DAA520', '#FFD700', '#DAA520'],
+                    shadow: 'rgba(0, 0, 0, 0.8)',
+                    outline: 'rgba(139, 90, 0, 0.8)'
+                })
+            },
+            {
+                name: 'Elegant Cream',
+                position: 'bottom',
+                font: 'Georgia',
+                effect: 'shadow',
+                getColors: () => ({
+                    gradient: ['#FFFDD0', '#FFF8DC', '#FFFDD0'],
+                    shadow: 'rgba(0, 0, 0, 0.9)',
+                    outline: 'rgba(80, 60, 20, 0.7)'
+                })
+            },
+            {
+                name: 'Vintage Rose',
+                position: 'center',
+                font: 'Georgia',
+                effect: 'emboss',
+                getColors: () => ({
+                    gradient: ['#BC8F8F', '#FFE4E1', '#BC8F8F'],
+                    shadow: 'rgba(0, 0, 0, 0.7)',
+                    outline: 'rgba(60, 30, 30, 0.6)'
+                })
+            },
+            
+            // === IMPACT STYLES (Bold/Meme Style) ===
+            {
+                name: 'Meme White',
+                position: 'top',
+                font: 'Impact',
+                effect: 'outline',
+                getColors: () => ({
+                    gradient: ['#FFFFFF', '#FFFFFF', '#FFFFFF'],
+                    shadow: 'rgba(0, 0, 0, 1)',
+                    outline: 'rgba(0, 0, 0, 1)'
+                })
+            },
+            {
+                name: 'Neon Green',
+                position: 'bottom',
+                font: 'Impact',
+                effect: 'neon',
+                getColors: () => ({
+                    gradient: ['#39FF14', '#7FFF00', '#39FF14'],
+                    shadow: 'rgba(57, 255, 20, 0.8)',
+                    outline: 'rgba(0, 50, 0, 0.9)'
+                })
+            },
+            {
+                name: 'Neon Pink',
+                position: 'center',
+                font: 'Impact',
+                effect: 'neon',
+                getColors: () => ({
+                    gradient: ['#FF1493', '#FF69B4', '#FF1493'],
+                    shadow: 'rgba(255, 20, 147, 0.8)',
+                    outline: 'rgba(50, 0, 30, 0.9)'
+                })
+            },
+            {
+                name: 'Electric Blue',
+                position: 'top',
+                font: 'Impact',
+                effect: 'neon',
+                getColors: () => ({
+                    gradient: ['#00BFFF', '#87CEFA', '#00BFFF'],
+                    shadow: 'rgba(0, 191, 255, 0.8)',
+                    outline: 'rgba(0, 20, 50, 0.9)'
+                })
+            },
+            
+            // === CURSIVE STYLES (Brush Script) ===
+            {
+                name: 'Brush Gold',
+                position: 'center',
+                font: 'Brush Script MT, cursive',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#FFD700', '#FFEC8B', '#FFD700'],
+                    shadow: 'rgba(255, 215, 0, 0.7)',
+                    outline: 'rgba(0, 0, 0, 0.4)'
+                })
+            },
+            {
+                name: 'Brush White',
+                position: 'bottom',
+                font: 'Brush Script MT, cursive',
+                effect: 'shadow',
+                getColors: () => ({
+                    gradient: ['#FFFFFF', '#F5F5F5', '#FFFFFF'],
+                    shadow: 'rgba(0, 0, 0, 0.9)',
+                    outline: 'rgba(0, 0, 0, 0.6)'
+                })
+            },
+            
+            // === SPECIAL EFFECTS ===
+            {
+                name: 'Rainbow',
+                position: 'center',
+                font: 'Pacifico',
+                effect: 'rainbow',
+                getColors: () => ({
+                    gradient: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#8B00FF'],
+                    shadow: 'rgba(255, 255, 255, 0.5)',
+                    outline: 'rgba(0, 0, 0, 0.6)'
+                })
+            },
+            {
+                name: 'Fire',
+                position: 'bottom',
+                font: 'Impact',
+                effect: 'fire',
+                getColors: () => ({
+                    gradient: ['#FF0000', '#FF4500', '#FFD700'],
+                    shadow: 'rgba(255, 69, 0, 0.8)',
+                    outline: 'rgba(139, 0, 0, 0.8)'
+                })
+            },
+            {
+                name: 'Ice',
+                position: 'center',
+                font: 'Georgia',
+                effect: 'ice',
+                getColors: () => ({
+                    gradient: ['#E0FFFF', '#B0E0E6', '#ADD8E6'],
+                    shadow: 'rgba(173, 216, 230, 0.8)',
+                    outline: 'rgba(70, 130, 180, 0.7)'
+                })
+            },
+            {
+                name: 'Retro',
+                position: 'top',
+                font: 'Courier New',
+                effect: 'retro',
+                getColors: () => ({
+                    gradient: ['#FF6B6B', '#FFA07A', '#FF6B6B'],
+                    shadow: 'rgba(0, 0, 0, 0.9)',
+                    outline: 'rgba(0, 0, 0, 0.8)'
+                })
+            },
+            {
+                name: 'Metallic Silver',
+                position: 'center',
+                font: 'Georgia',
+                effect: 'metallic',
+                getColors: () => ({
+                    gradient: ['#C0C0C0', '#FFFFFF', '#A9A9A9', '#FFFFFF', '#C0C0C0'],
+                    shadow: 'rgba(0, 0, 0, 0.7)',
+                    outline: 'rgba(50, 50, 50, 0.8)'
+                })
+            },
+            {
+                name: 'Metallic Bronze',
+                position: 'bottom',
+                font: 'Georgia',
+                effect: 'metallic',
+                getColors: () => ({
+                    gradient: ['#CD7F32', '#FFD700', '#CD7F32', '#8B4513'],
+                    shadow: 'rgba(0, 0, 0, 0.8)',
+                    outline: 'rgba(60, 30, 10, 0.8)'
                 })
             }
         ];
@@ -477,8 +758,11 @@
             setLoading(true);
 
             try {
-                // Fetch a random image
-                const imageUrl = await fetchRandomImage();
+                // Pick a random image ID from our curated list
+                const imageId = beautifulImageIds[Math.floor(Math.random() * beautifulImageIds.length)];
+                
+                // Use Picsum Photos - reliable, free, CORS-enabled
+                const imageUrl = `https://picsum.photos/id/${imageId}/800/600`;
 
                 // Load the image
                 const img = new Image();
@@ -512,6 +796,11 @@
                     overlayGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
                     overlayGradient.addColorStop(0.8, 'rgba(0, 0, 0, 0.2)');
                     overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
+                } else if (style.position === 'top') {
+                    overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0.5)');
+                    overlayGradient.addColorStop(0.2, 'rgba(0, 0, 0, 0.2)');
+                    overlayGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+                    overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
                 } else {
                     overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0.1)');
                     overlayGradient.addColorStop(0.4, 'rgba(0, 0, 0, 0)');
@@ -523,7 +812,7 @@
 
                 // Configure text style
                 const fontSize = Math.min(canvas.width, canvas.height) * 0.15;
-                ctx.font = `bold ${fontSize}px ${style.font}, cursive`;
+                ctx.font = `bold ${fontSize}px ${style.font}, sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
 
@@ -534,33 +823,175 @@
                 let y;
                 if (style.position === 'bottom') {
                     y = canvas.height - fontSize * 0.9;
+                } else if (style.position === 'top') {
+                    y = fontSize * 0.9;
                 } else {
                     y = canvas.height / 2;
                 }
 
-                // Draw text shadow (multiple layers for glow effect)
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-                ctx.shadowBlur = 20;
-                ctx.shadowOffsetX = 4;
-                ctx.shadowOffsetY = 4;
+                // Apply different effects based on style
+                const effect = style.effect || 'glow';
+                
+                // Reset all shadow settings first
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
 
-                // Draw outline
-                ctx.strokeStyle = colors.outline;
-                ctx.lineWidth = fontSize * 0.08;
-                ctx.strokeText(text, x, y);
+                switch (effect) {
+                    case 'neon':
+                        // Multiple glow layers for neon effect
+                        ctx.shadowColor = colors.shadow;
+                        ctx.shadowBlur = 30;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.1;
+                        ctx.strokeText(text, x, y);
+                        ctx.shadowBlur = 20;
+                        ctx.strokeText(text, x, y);
+                        ctx.shadowBlur = 10;
+                        ctx.fillStyle = colors.gradient[0];
+                        ctx.fillText(text, x, y);
+                        break;
+
+                    case 'outline':
+                        // Heavy outline style (meme style)
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.15;
+                        ctx.strokeText(text, x, y);
+                        ctx.fillStyle = colors.gradient[0];
+                        ctx.fillText(text, x, y);
+                        break;
+
+                    case 'emboss':
+                        // Embossed/3D effect
+                        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                        ctx.fillText(text, x + 4, y + 4);
+                        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                        ctx.fillText(text, x - 2, y - 2);
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.04;
+                        ctx.strokeText(text, x, y);
+                        break;
+
+                    case 'shadow':
+                        // Strong drop shadow
+                        ctx.shadowColor = colors.shadow;
+                        ctx.shadowBlur = 8;
+                        ctx.shadowOffsetX = 6;
+                        ctx.shadowOffsetY = 6;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.06;
+                        ctx.strokeText(text, x, y);
+                        break;
+
+                    case 'solid':
+                        // Clean solid with thin outline
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.05;
+                        ctx.strokeText(text, x, y);
+                        break;
+
+                    case 'rainbow':
+                        // Rainbow gradient across text
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.08;
+                        ctx.strokeText(text, x, y);
+                        break;
+
+                    case 'fire':
+                        // Fire effect with upward gradient
+                        ctx.shadowColor = 'rgba(255, 100, 0, 0.8)';
+                        ctx.shadowBlur = 25;
+                        ctx.shadowOffsetY = -5;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.08;
+                        ctx.strokeText(text, x, y);
+                        break;
+
+                    case 'ice':
+                        // Ice/frost effect
+                        ctx.shadowColor = colors.shadow;
+                        ctx.shadowBlur = 15;
+                        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+                        ctx.lineWidth = fontSize * 0.1;
+                        ctx.strokeText(text, x, y);
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.04;
+                        ctx.strokeText(text, x, y);
+                        break;
+
+                    case 'retro':
+                        // Retro offset shadow
+                        ctx.fillStyle = colors.shadow;
+                        ctx.fillText(text, x + 5, y + 5);
+                        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                        ctx.fillText(text, x + 3, y + 3);
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.06;
+                        ctx.strokeText(text, x, y);
+                        break;
+
+                    case 'metallic':
+                        // Metallic shine effect
+                        ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                        ctx.shadowBlur = 10;
+                        ctx.shadowOffsetX = 3;
+                        ctx.shadowOffsetY = 3;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.06;
+                        ctx.strokeText(text, x, y);
+                        break;
+
+                    case 'glow':
+                    default:
+                        // Default glow effect
+                        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                        ctx.shadowBlur = 20;
+                        ctx.shadowOffsetX = 4;
+                        ctx.shadowOffsetY = 4;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.08;
+                        ctx.strokeText(text, x, y);
+                        break;
+                }
 
                 // Draw main text with gradient
                 const textGradient = ctx.createLinearGradient(
                     x - fontSize * 2, y - fontSize / 2,
                     x + fontSize * 2, y + fontSize / 2
                 );
-                textGradient.addColorStop(0, colors.gradient[0]);
-                textGradient.addColorStop(0.5, colors.gradient[1]);
-                textGradient.addColorStop(1, colors.gradient[2]);
+                
+                // Handle different gradient lengths
+                if (colors.gradient.length === 6) {
+                    // Rainbow
+                    colors.gradient.forEach((color, i) => {
+                        textGradient.addColorStop(i / (colors.gradient.length - 1), color);
+                    });
+                } else if (colors.gradient.length === 5) {
+                    // Metallic
+                    colors.gradient.forEach((color, i) => {
+                        textGradient.addColorStop(i / (colors.gradient.length - 1), color);
+                    });
+                } else if (colors.gradient.length === 4) {
+                    textGradient.addColorStop(0, colors.gradient[0]);
+                    textGradient.addColorStop(0.33, colors.gradient[1]);
+                    textGradient.addColorStop(0.66, colors.gradient[2]);
+                    textGradient.addColorStop(1, colors.gradient[3]);
+                } else {
+                    textGradient.addColorStop(0, colors.gradient[0]);
+                    textGradient.addColorStop(0.5, colors.gradient[1]);
+                    textGradient.addColorStop(1, colors.gradient[2]);
+                }
                 
                 ctx.fillStyle = textGradient;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = colors.shadow;
+                
+                // Add final glow for certain effects
+                if (['glow', 'neon', 'fire', 'ice'].includes(effect)) {
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = colors.shadow;
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+                }
+                
                 ctx.fillText(text, x, y);
 
                 // Reset shadow
@@ -568,7 +999,7 @@
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 0;
 
-                console.log(`Style used: ${style.name} (${style.position})`);
+                console.log(`Style: ${style.name} | Position: ${style.position} | Effect: ${effect}`);
 
                 // Show the result
                 document.getElementById('imageContainer').classList.add('visible');
