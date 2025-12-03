@@ -304,7 +304,7 @@
         </div>
 
         <p class="credits">
-            Images from <a href="https://unsplash.com" target="_blank">Unsplash</a>
+            Images from <a href="https://loremflickr.com" target="_blank">LoremFlickr</a> (Flickr)
         </p>
 
         <footer class="footer">
@@ -315,20 +315,8 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // ============================================
-        // UNSPLASH API CONFIGURATION
-        // ============================================
-        // Get your free API key at: https://unsplash.com/developers
-        // 1. Create an account at unsplash.com
-        // 2. Go to https://unsplash.com/developers
-        // 3. Click "New Application"
-        // 4. Accept terms and create app
-        // 5. Copy your "Access Key" and paste below
-        // ============================================
-        
-        const UNSPLASH_ACCESS_KEY = 'YOUR_UNSPLASH_ACCESS_KEY_HERE';
-        
         // Search terms for positive, fun images (randomly selected each time)
+        // Using Unsplash Source (no API key needed!)
         const searchTerms = [
             // Animals - cute and fun
             'cute dog',
@@ -341,8 +329,7 @@
             'cute animals',
             'funny animals',
             'baby animals',
-            'pets',
-            'wildlife cute',
+            'adorable pets',
             
             // Positive & Fun
             'happiness',
@@ -354,40 +341,39 @@
             'colorful',
             'rainbow',
             'smile',
-            'laughing',
+            'laughing people',
             'fun',
-            'positive vibes',
             'good vibes',
             
             // Food & Drinks
             'coffee morning',
-            'breakfast',
+            'breakfast food',
             'delicious food',
             'colorful food',
-            'fruits',
+            'fresh fruits',
             'dessert',
             'ice cream',
             'donuts',
             'cupcakes',
-            'smoothie',
+            'smoothie bowl',
             
             // Nature positivity
-            'sunrise',
-            'sunset beautiful',
-            'flowers',
-            'sunflowers',
+            'sunrise landscape',
+            'beautiful sunset',
+            'colorful flowers',
+            'sunflower field',
             'cherry blossom',
             'spring flowers',
             'tropical beach',
             'beautiful nature',
-            'golden hour',
+            'golden hour light',
             
             // Cozy & Warm
-            'cozy',
+            'cozy home',
             'hygge',
             'warm coffee',
             'fairy lights',
-            'candles cozy',
+            'cozy candles',
         ];
 
         // Text style configurations with more variety
@@ -717,35 +703,15 @@
             setLoading(true);
 
             try {
-                let imageUrl;
+                // Pick a random search term
+                const searchTerm = searchTerms[Math.floor(Math.random() * searchTerms.length)];
                 
-                // Check if Unsplash API key is configured
-                if (UNSPLASH_ACCESS_KEY && UNSPLASH_ACCESS_KEY !== 'YOUR_UNSPLASH_ACCESS_KEY_HERE') {
-                    // Use Unsplash API for truly random images
-                    const searchTerm = searchTerms[Math.floor(Math.random() * searchTerms.length)];
-                    const response = await fetch(
-                        `https://api.unsplash.com/photos/random?query=${encodeURIComponent(searchTerm)}&orientation=landscape&content_filter=high`,
-                        {
-                            headers: {
-                                'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`
-                            }
-                        }
-                    );
-                    
-                    if (!response.ok) {
-                        throw new Error(`Unsplash API error: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    imageUrl = data.urls.regular;
-                    console.log(`Search: "${searchTerm}" | Photo by: ${data.user.name} on Unsplash`);
-                } else {
-                    // Fallback to Picsum if no API key
-                    console.warn('No Unsplash API key configured. Using Picsum fallback.');
-                    console.warn('Get your free key at: https://unsplash.com/developers');
-                    const randomId = Math.floor(Math.random() * 1000) + 1;
-                    imageUrl = `https://picsum.photos/id/${randomId}/800/600`;
-                }
+                // Use loremflickr.com - free, no API key, CORS-enabled, truly random!
+                // Each request with a unique lock parameter returns a different random image
+                const randomLock = Math.random().toString(36).substring(7);
+                const imageUrl = `https://loremflickr.com/800/600/${encodeURIComponent(searchTerm)}?lock=${randomLock}`;
+                
+                console.log(`Searching for: "${searchTerm}"`);
 
                 // Load the image
                 const img = new Image();
