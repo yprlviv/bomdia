@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boromir Meme Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        h1 {
+            margin-bottom: 1rem;
+        }
+        #resultCanvas {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .buttons {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+        button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .copy-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        .download-btn {
+            background: #2196F3;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            background: #333;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .toast.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧙 One Does Not Simply...</h1>
+    <canvas id="resultCanvas"></canvas>
+    <div class="buttons">
+        <button class="copy-btn" onclick="copyImage()">📋 Copy Image</button>
+        <button class="download-btn" onclick="downloadImage()">💾 Download</button>
+    </div>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const canvas = document.getElementById('resultCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Load and process image
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            
+            // Draw image
+            ctx.drawImage(img, 0, 0);
+            
+            // Add dark overlay at top and bottom for text
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, 'rgba(0, 0, 0, 0.6)');
+            gradient.addColorStop(0.15, 'rgba(0, 0, 0, 0)');
+            gradient.addColorStop(0.85, 'rgba(0, 0, 0, 0)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0.6)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Configure text - Impact font for classic meme style
+            const fontSize = Math.min(canvas.width, canvas.height) * 0.065;
+            ctx.font = `bold ${fontSize}px Impact, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.lineWidth = fontSize * 0.1;
+            ctx.strokeStyle = 'black';
+            ctx.fillStyle = 'white';
+            
+            // Top text
+            const topText = "ONE DOES NOT SIMPLY";
+            ctx.strokeText(topText, canvas.width / 2, fontSize * 1.2);
+            ctx.fillText(topText, canvas.width / 2, fontSize * 1.2);
+            
+            // Bottom text - wrap if needed
+            const bottomText = "SEND A BOM DIA MESSAGE WITHOUT TRYING THE NEW GENERATOR";
+            const maxWidth = canvas.width * 0.9;
+            const words = bottomText.split(' ');
+            let lines = [];
+            let currentLine = '';
+            
+            for (let word of words) {
+                const testLine = currentLine + (currentLine ? ' ' : '') + word;
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && currentLine) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine);
+            
+            // Draw bottom lines
+            const lineHeight = fontSize * 1.2;
+            const startY = canvas.height - (lines.length * lineHeight) - fontSize * 0.3;
+            
+            lines.forEach((line, i) => {
+                const y = startY + (i * lineHeight);
+                ctx.strokeText(line, canvas.width / 2, y);
+                ctx.fillText(line, canvas.width / 2, y);
+            });
+        };
+        
+        // Use a placeholder - you'll need to paste the actual image URL or use a local file
+        img.src = 'https://i.imgflip.com/1bij.jpg';
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
+
+        async function copyImage() {
+            try {
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                showToast('📋 Image copied! Paste it anywhere');
+            } catch (e) {
+                showToast('❌ Copy failed - try download instead');
+            }
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'bom-dia-meme.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast('💾 Image downloaded!');
+        }
+    </script>
+</body>
+</html>
+
