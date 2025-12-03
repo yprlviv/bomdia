@@ -394,17 +394,14 @@
         // Current selected mood
         let currentMood = 'random';
 
-        // Pexels API key (free tier)
-        const PEXELS_API_KEY = 'cjiFqLrEF8PYdntvd0XAkZlfarPBOYyUaVLLqYdNdwnyfKLMncl7TWLZ';
-
-        // Search terms for each mood
+        // Search terms for each mood (used with loremflickr which supports CORS)
         const moodSearchTerms = {
-            coffee: ['coffee cup', 'latte art', 'morning coffee', 'cappuccino', 'cafe'],
-            cat: ['cute cat', 'kitten', 'cat portrait', 'fluffy cat', 'tabby cat'],
-            dog: ['happy dog', 'cute puppy', 'dog portrait', 'golden retriever', 'playful dog'],
-            fun: ['celebration', 'colorful balloons', 'party confetti', 'happy people', 'festival'],
-            nature: ['sunrise landscape', 'ocean sunset', 'mountain lake', 'forest morning', 'flower field'],
-            random: ['good morning', 'sunrise', 'happy', 'beautiful nature', 'cute animal', 'coffee']
+            coffee: ['coffee,cup', 'latte,art', 'cappuccino', 'espresso', 'cafe,morning'],
+            cat: ['cat,cute', 'kitten', 'cat,fluffy', 'cat,sleeping', 'cat,funny'],
+            dog: ['dog,happy', 'puppy,cute', 'dog,golden', 'dog,funny', 'puppy,playful'],
+            fun: ['balloons,colorful', 'confetti,party', 'celebration', 'festival,happy', 'fireworks'],
+            nature: ['sunrise,landscape', 'sunset,ocean', 'mountain,lake', 'forest,morning', 'flowers,field'],
+            random: ['sunrise', 'coffee,morning', 'nature,beautiful', 'cat,cute', 'dog,happy', 'flowers']
         };
 
         function selectMood(mood) {
@@ -415,33 +412,14 @@
             });
         }
 
-        async function fetchRandomImage() {
+        function getRandomImageUrl() {
             const terms = moodSearchTerms[currentMood];
             const searchTerm = terms[Math.floor(Math.random() * terms.length)];
-            const randomPage = Math.floor(Math.random() * 10) + 1; // Random page 1-10
+            const timestamp = Date.now();
+            const random = Math.floor(Math.random() * 1000);
             
-            const response = await fetch(
-                `https://api.pexels.com/v1/search?query=${encodeURIComponent(searchTerm)}&per_page=15&page=${randomPage}`,
-                {
-                    headers: {
-                        'Authorization': PEXELS_API_KEY
-                    }
-                }
-            );
-            
-            if (!response.ok) {
-                throw new Error('Failed to fetch from Pexels');
-            }
-            
-            const data = await response.json();
-            
-            if (!data.photos || data.photos.length === 0) {
-                throw new Error('No images found');
-            }
-            
-            // Pick a random photo from results
-            const randomPhoto = data.photos[Math.floor(Math.random() * data.photos.length)];
-            return randomPhoto.src.large; // Returns ~940px wide image
+            // LoremFlickr - free, CORS-enabled, supports search tags
+            return `https://loremflickr.com/800/600/${searchTerm}?lock=${timestamp}${random}`;
         }
 
         // Text style configurations
@@ -585,8 +563,8 @@
             setLoading(true);
 
             try {
-                // Fetch a random image from Pexels based on mood
-                const imageUrl = await fetchRandomImage();
+                // Get random image URL based on mood
+                const imageUrl = getRandomImageUrl();
 
                 // Load the image
                 const img = new Image();
