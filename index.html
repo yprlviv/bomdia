@@ -317,50 +317,141 @@
     <script>
         // PRIORITY: Animals, positivity, fun images (appear 3x more often)
         const priorityImageIds = [
-            // Animals - cute and fun
-            237,  // Dog
+            // === CUTE ANIMALS ===
+            // Dogs - everyone's best friend!
+            237,  // Happy dog portrait
             219,  // Dog in nature
-            200,  // Dog
-            169,  // Dog
-            1025, // Pug
-            1062, // Dog
-            1074, // Cat
-            1084, // Cat
+            200,  // Friendly dog
+            169,  // Cute dog
+            1025, // Adorable pug
+            1062, // Playful dog
             40,   // Dog on beach
-            177,  // Dog
-            433,  // Deer
-            582,  // Bird
-            593,  // Butterfly
-            659,  // Horse
-            783,  // Dog
-            837,  // Dog
-            1024, // Dog
-            1039, // Cat
-            1047, // Cat
-            1053, // Dog
-            1061, // Dog
-            1069, // Dog
-            // Fun & Positive vibes
-            22,   // Coffee fun
-            68,   // Coffee morning
+            177,  // Sweet dog
+            783,  // Happy pup
+            837,  // Dog smiling
+            1024, // Cute puppy
+            1053, // Fluffy dog
+            1061, // Dog portrait
+            1069, // Joyful dog
+            
+            // Cats - internet favorites
+            1074, // Cute cat
+            1084, // Cat portrait
+            1039, // Sleepy cat
+            1047, // Curious cat
+            
+            // Other cute animals
+            433,  // Deer in nature
+            582,  // Colorful bird
+            593,  // Beautiful butterfly
+            659,  // Majestic horse
+            1003, // Owl
+            1020, // Fox
+            1033, // Squirrel
+            1037, // Bunny rabbit
+            1055, // Sheep
+            1059, // Llama/Alpaca
+            1060, // Duck
+            1067, // Goat
+            1070, // Parrot
+            1076, // Seagull
+            1078, // Peacock
+            1081, // Flamingo
+            
+            // === FUN & COLORFUL ===
             225,  // Balloons celebration
-            318,  // Colorful
-            326,  // Fun colors
-            370,  // Celebration
+            318,  // Colorful abstract
+            326,  // Fun bright colors
+            370,  // Celebration vibes
             399,  // Happy colors
             403,  // Bright positive
             452,  // Fun scene
-            500,  // Positive vibes
-            532,  // Cheerful
+            532,  // Cheerful colors
             564,  // Bright happy
-            609,  // Fun outdoor
-            658,  // Joyful
-            688,  // Happy scene
-            719,  // Positive energy
             755,  // Fun moment
             866,  // Cheerful scene
+            1041, // Colorful umbrellas
+            1043, // Bright lights
+            1049, // Neon signs
+            1051, // Colorful wall
+            1057, // Rainbow colors
+            1065, // Confetti
+            1071, // Party lights
+            1073, // Fireworks
+            1077, // Carnival
+            1079, // Festival
+            1082, // Disco ball
+            1085, // Sparklers
+            
+            // === FOOD & DRINKS (Yummy!) ===
+            22,   // Coffee fun
+            68,   // Morning coffee
+            292,  // Delicious food
+            312,  // Fresh fruits
+            425,  // Tasty breakfast
+            429,  // Pancakes
+            431,  // Ice cream
+            436,  // Donuts
+            438,  // Cupcakes
+            441,  // Pizza
+            445,  // Burger
+            447,  // Smoothie
+            455,  // Croissant
+            459,  // Waffles
+            462,  // Macarons
+            466,  // Sushi
+            475,  // Tacos
+            488,  // Chocolate
+            493,  // Cookies
+            502,  // Fruit bowl
+            
+            // === HAPPY PEOPLE & LIFESTYLE ===
+            500,  // Positive vibes
+            609,  // Fun outdoor
+            658,  // Joyful moment
+            688,  // Happy scene
+            719,  // Positive energy
             901,  // Happy vibes
-            984,  // Positive
+            984,  // Positive life
+            64,   // Friends laughing
+            334,  // Beach fun
+            342,  // Adventure
+            349,  // Travel joy
+            357,  // Outdoor fun
+            366,  // Friendship
+            378,  // Happy moments
+            385,  // Celebration
+            392,  // Good times
+            406,  // Joy
+            
+            // === CUTE & COZY ===
+            15,   // Cozy coffee
+            225,  // Warm vibes
+            260,  // Cozy blanket
+            270,  // Reading nook
+            280,  // Candles
+            290,  // Fairy lights
+            301,  // Cozy room
+            310,  // Warm drink
+            320,  // Comfort
+            330,  // Hygge vibes
+            
+            // === NATURE POSITIVITY ===
+            54,   // Beautiful flowers
+            65,   // Lavender field
+            90,   // Autumn colors
+            106,  // Sunrise hope
+            152,  // Sunset beauty
+            164,  // Flower garden
+            182,  // Spring blooms
+            190,  // Tropical paradise
+            197,  // Golden hour
+            204,  // Cherry blossoms
+            211,  // Sunflowers
+            218,  // Tulips
+            226,  // Daisies
+            233,  // Roses
+            240,  // Wildflowers
         ];
 
         // Secondary: Nature, landscapes, morning vibes
@@ -423,8 +514,10 @@
             197,  // Sunset
         ];
 
-        // Combined list with equal chance for all images
+        // Combined list with priority images appearing 3x more often
         const beautifulImageIds = [
+            ...priorityImageIds,
+            ...priorityImageIds,
             ...priorityImageIds,
             ...secondaryImageIds
         ];
