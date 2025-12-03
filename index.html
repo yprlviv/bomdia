@@ -376,12 +376,12 @@
             'cozy candles',
         ];
 
-        // Text style configurations with more variety
+        // Text style configurations - ALL positioned at BOTTOM
+        // 50 unique styles with different fonts, colors, and effects
         const textStyles = [
-            // === PACIFICO STYLES (Script/Cursive) ===
+            // === PACIFICO STYLES (Elegant Script) ===
             {
                 name: 'Golden Sunrise',
-                position: 'center',
                 font: 'Pacifico',
                 effect: 'glow',
                 getColors: () => ({
@@ -392,7 +392,6 @@
             },
             {
                 name: 'Ocean Blue',
-                position: 'bottom',
                 font: 'Pacifico',
                 effect: 'glow',
                 getColors: () => ({
@@ -403,7 +402,6 @@
             },
             {
                 name: 'Rose Pink',
-                position: 'center',
                 font: 'Pacifico',
                 effect: 'glow',
                 getColors: () => ({
@@ -414,7 +412,6 @@
             },
             {
                 name: 'Pure White',
-                position: 'bottom',
                 font: 'Pacifico',
                 effect: 'shadow',
                 getColors: () => ({
@@ -425,7 +422,6 @@
             },
             {
                 name: 'Sunset Orange',
-                position: 'center',
                 font: 'Pacifico',
                 effect: 'glow',
                 getColors: () => ({
@@ -434,11 +430,30 @@
                     outline: 'rgba(50, 20, 10, 0.6)'
                 })
             },
+            {
+                name: 'Lavender Dream',
+                font: 'Pacifico',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#E6E6FA', '#DDA0DD', '#E6E6FA'],
+                    shadow: 'rgba(221, 160, 221, 0.6)',
+                    outline: 'rgba(75, 0, 130, 0.5)'
+                })
+            },
+            {
+                name: 'Peach Glow',
+                font: 'Pacifico',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#FFDAB9', '#FFE4B5', '#FFDAB9'],
+                    shadow: 'rgba(255, 218, 185, 0.7)',
+                    outline: 'rgba(139, 69, 19, 0.5)'
+                })
+            },
             
             // === NUNITO STYLES (Modern Sans-Serif) ===
             {
                 name: 'Mint Fresh',
-                position: 'bottom',
                 font: 'Nunito',
                 effect: 'solid',
                 getColors: () => ({
@@ -449,7 +464,6 @@
             },
             {
                 name: 'Royal Purple',
-                position: 'center',
                 font: 'Nunito',
                 effect: 'glow',
                 getColors: () => ({
@@ -460,7 +474,6 @@
             },
             {
                 name: 'Warm Coral',
-                position: 'bottom',
                 font: 'Nunito',
                 effect: 'shadow',
                 getColors: () => ({
@@ -471,7 +484,6 @@
             },
             {
                 name: 'Sky Cyan',
-                position: 'center',
                 font: 'Nunito',
                 effect: 'solid',
                 getColors: () => ({
@@ -482,7 +494,6 @@
             },
             {
                 name: 'Lemon Yellow',
-                position: 'bottom',
                 font: 'Nunito',
                 effect: 'glow',
                 getColors: () => ({
@@ -491,11 +502,30 @@
                     outline: 'rgba(60, 60, 0, 0.7)'
                 })
             },
+            {
+                name: 'Aquamarine',
+                font: 'Nunito',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#7FFFD4', '#E0FFFF', '#7FFFD4'],
+                    shadow: 'rgba(127, 255, 212, 0.6)',
+                    outline: 'rgba(0, 100, 100, 0.6)'
+                })
+            },
+            {
+                name: 'Salmon Pink',
+                font: 'Nunito',
+                effect: 'solid',
+                getColors: () => ({
+                    gradient: ['#FA8072', '#FFC0CB', '#FA8072'],
+                    shadow: 'rgba(250, 128, 114, 0.6)',
+                    outline: 'rgba(100, 30, 30, 0.6)'
+                })
+            },
             
             // === GEORGIA STYLES (Classic Serif) ===
             {
                 name: 'Classic Gold',
-                position: 'center',
                 font: 'Georgia',
                 effect: 'emboss',
                 getColors: () => ({
@@ -506,7 +536,6 @@
             },
             {
                 name: 'Elegant Cream',
-                position: 'bottom',
                 font: 'Georgia',
                 effect: 'shadow',
                 getColors: () => ({
@@ -517,7 +546,6 @@
             },
             {
                 name: 'Vintage Rose',
-                position: 'center',
                 font: 'Georgia',
                 effect: 'emboss',
                 getColors: () => ({
@@ -526,11 +554,30 @@
                     outline: 'rgba(60, 30, 30, 0.6)'
                 })
             },
+            {
+                name: 'Antique White',
+                font: 'Georgia',
+                effect: 'emboss',
+                getColors: () => ({
+                    gradient: ['#FAEBD7', '#FFFFFF', '#FAEBD7'],
+                    shadow: 'rgba(0, 0, 0, 0.8)',
+                    outline: 'rgba(139, 119, 101, 0.7)'
+                })
+            },
+            {
+                name: 'Sepia Tone',
+                font: 'Georgia',
+                effect: 'shadow',
+                getColors: () => ({
+                    gradient: ['#D2691E', '#F4A460', '#D2691E'],
+                    shadow: 'rgba(0, 0, 0, 0.9)',
+                    outline: 'rgba(80, 40, 0, 0.8)'
+                })
+            },
             
             // === IMPACT STYLES (Bold/Meme Style) ===
             {
                 name: 'Meme White',
-                position: 'top',
                 font: 'Impact',
                 effect: 'outline',
                 getColors: () => ({
@@ -541,7 +588,6 @@
             },
             {
                 name: 'Neon Green',
-                position: 'bottom',
                 font: 'Impact',
                 effect: 'neon',
                 getColors: () => ({
@@ -552,7 +598,6 @@
             },
             {
                 name: 'Neon Pink',
-                position: 'center',
                 font: 'Impact',
                 effect: 'neon',
                 getColors: () => ({
@@ -563,7 +608,6 @@
             },
             {
                 name: 'Electric Blue',
-                position: 'top',
                 font: 'Impact',
                 effect: 'neon',
                 getColors: () => ({
@@ -572,11 +616,72 @@
                     outline: 'rgba(0, 20, 50, 0.9)'
                 })
             },
+            {
+                name: 'Neon Orange',
+                font: 'Impact',
+                effect: 'neon',
+                getColors: () => ({
+                    gradient: ['#FF4500', '#FF6347', '#FF4500'],
+                    shadow: 'rgba(255, 69, 0, 0.8)',
+                    outline: 'rgba(50, 20, 0, 0.9)'
+                })
+            },
+            {
+                name: 'Neon Yellow',
+                font: 'Impact',
+                effect: 'neon',
+                getColors: () => ({
+                    gradient: ['#FFFF00', '#FFFF99', '#FFFF00'],
+                    shadow: 'rgba(255, 255, 0, 0.8)',
+                    outline: 'rgba(50, 50, 0, 0.9)'
+                })
+            },
+            {
+                name: 'Neon Purple',
+                font: 'Impact',
+                effect: 'neon',
+                getColors: () => ({
+                    gradient: ['#BF00FF', '#DA70D6', '#BF00FF'],
+                    shadow: 'rgba(191, 0, 255, 0.8)',
+                    outline: 'rgba(30, 0, 50, 0.9)'
+                })
+            },
+            
+            // === ARIAL STYLES (Clean Sans-Serif) ===
+            {
+                name: 'Clean White',
+                font: 'Arial Black',
+                effect: 'outline',
+                getColors: () => ({
+                    gradient: ['#FFFFFF', '#F5F5F5', '#FFFFFF'],
+                    shadow: 'rgba(0, 0, 0, 0.9)',
+                    outline: 'rgba(0, 0, 0, 0.9)'
+                })
+            },
+            {
+                name: 'Bold Red',
+                font: 'Arial Black',
+                effect: 'outline',
+                getColors: () => ({
+                    gradient: ['#FF0000', '#FF4444', '#FF0000'],
+                    shadow: 'rgba(0, 0, 0, 0.9)',
+                    outline: 'rgba(0, 0, 0, 0.9)'
+                })
+            },
+            {
+                name: 'Bold Blue',
+                font: 'Arial Black',
+                effect: 'outline',
+                getColors: () => ({
+                    gradient: ['#0066FF', '#3399FF', '#0066FF'],
+                    shadow: 'rgba(0, 0, 0, 0.9)',
+                    outline: 'rgba(0, 0, 0, 0.9)'
+                })
+            },
             
             // === CURSIVE STYLES (Brush Script) ===
             {
                 name: 'Brush Gold',
-                position: 'center',
                 font: 'Brush Script MT, cursive',
                 effect: 'glow',
                 getColors: () => ({
@@ -587,7 +692,6 @@
             },
             {
                 name: 'Brush White',
-                position: 'bottom',
                 font: 'Brush Script MT, cursive',
                 effect: 'shadow',
                 getColors: () => ({
@@ -596,11 +700,20 @@
                     outline: 'rgba(0, 0, 0, 0.6)'
                 })
             },
+            {
+                name: 'Brush Pink',
+                font: 'Brush Script MT, cursive',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#FF69B4', '#FFB6C1', '#FF69B4'],
+                    shadow: 'rgba(255, 105, 180, 0.7)',
+                    outline: 'rgba(0, 0, 0, 0.4)'
+                })
+            },
             
             // === SPECIAL EFFECTS ===
             {
                 name: 'Rainbow',
-                position: 'center',
                 font: 'Pacifico',
                 effect: 'rainbow',
                 getColors: () => ({
@@ -611,7 +724,6 @@
             },
             {
                 name: 'Fire',
-                position: 'bottom',
                 font: 'Impact',
                 effect: 'fire',
                 getColors: () => ({
@@ -622,7 +734,6 @@
             },
             {
                 name: 'Ice',
-                position: 'center',
                 font: 'Georgia',
                 effect: 'ice',
                 getColors: () => ({
@@ -632,8 +743,7 @@
                 })
             },
             {
-                name: 'Retro',
-                position: 'top',
+                name: 'Retro Red',
                 font: 'Courier New',
                 effect: 'retro',
                 getColors: () => ({
@@ -643,8 +753,17 @@
                 })
             },
             {
+                name: 'Retro Teal',
+                font: 'Courier New',
+                effect: 'retro',
+                getColors: () => ({
+                    gradient: ['#20B2AA', '#48D1CC', '#20B2AA'],
+                    shadow: 'rgba(0, 0, 0, 0.9)',
+                    outline: 'rgba(0, 0, 0, 0.8)'
+                })
+            },
+            {
                 name: 'Metallic Silver',
-                position: 'center',
                 font: 'Georgia',
                 effect: 'metallic',
                 getColors: () => ({
@@ -655,7 +774,6 @@
             },
             {
                 name: 'Metallic Bronze',
-                position: 'bottom',
                 font: 'Georgia',
                 effect: 'metallic',
                 getColors: () => ({
@@ -663,7 +781,111 @@
                     shadow: 'rgba(0, 0, 0, 0.8)',
                     outline: 'rgba(60, 30, 10, 0.8)'
                 })
-            }
+            },
+            {
+                name: 'Metallic Rose Gold',
+                font: 'Georgia',
+                effect: 'metallic',
+                getColors: () => ({
+                    gradient: ['#B76E79', '#F7CAC9', '#B76E79', '#E8B4B8'],
+                    shadow: 'rgba(0, 0, 0, 0.7)',
+                    outline: 'rgba(80, 40, 50, 0.8)'
+                })
+            },
+            
+            // === GRADIENT STYLES ===
+            {
+                name: 'Sunset Gradient',
+                font: 'Pacifico',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#FF512F', '#F09819', '#FF512F'],
+                    shadow: 'rgba(255, 81, 47, 0.6)',
+                    outline: 'rgba(0, 0, 0, 0.5)'
+                })
+            },
+            {
+                name: 'Ocean Gradient',
+                font: 'Pacifico',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#2193b0', '#6dd5ed', '#2193b0'],
+                    shadow: 'rgba(33, 147, 176, 0.6)',
+                    outline: 'rgba(0, 0, 0, 0.5)'
+                })
+            },
+            {
+                name: 'Berry Gradient',
+                font: 'Nunito',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#8E2DE2', '#4A00E0', '#8E2DE2'],
+                    shadow: 'rgba(142, 45, 226, 0.6)',
+                    outline: 'rgba(0, 0, 0, 0.5)'
+                })
+            },
+            {
+                name: 'Lime Gradient',
+                font: 'Nunito',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#56ab2f', '#a8e063', '#56ab2f'],
+                    shadow: 'rgba(86, 171, 47, 0.6)',
+                    outline: 'rgba(0, 0, 0, 0.5)'
+                })
+            },
+            {
+                name: 'Candy Gradient',
+                font: 'Pacifico',
+                effect: 'glow',
+                getColors: () => ({
+                    gradient: ['#ff9a9e', '#fecfef', '#ff9a9e'],
+                    shadow: 'rgba(255, 154, 158, 0.6)',
+                    outline: 'rgba(0, 0, 0, 0.4)'
+                })
+            },
+            
+            // === PASTEL STYLES ===
+            {
+                name: 'Pastel Blue',
+                font: 'Nunito',
+                effect: 'solid',
+                getColors: () => ({
+                    gradient: ['#AEC6CF', '#D4E5ED', '#AEC6CF'],
+                    shadow: 'rgba(174, 198, 207, 0.6)',
+                    outline: 'rgba(0, 50, 80, 0.6)'
+                })
+            },
+            {
+                name: 'Pastel Pink',
+                font: 'Nunito',
+                effect: 'solid',
+                getColors: () => ({
+                    gradient: ['#FFB7C5', '#FFDDE1', '#FFB7C5'],
+                    shadow: 'rgba(255, 183, 197, 0.6)',
+                    outline: 'rgba(80, 30, 50, 0.6)'
+                })
+            },
+            {
+                name: 'Pastel Green',
+                font: 'Nunito',
+                effect: 'solid',
+                getColors: () => ({
+                    gradient: ['#B2D8B2', '#D4EDDA', '#B2D8B2'],
+                    shadow: 'rgba(178, 216, 178, 0.6)',
+                    outline: 'rgba(30, 80, 30, 0.6)'
+                })
+            },
+            {
+                name: 'Pastel Yellow',
+                font: 'Nunito',
+                effect: 'solid',
+                getColors: () => ({
+                    gradient: ['#FDFD96', '#FFFACD', '#FDFD96'],
+                    shadow: 'rgba(253, 253, 150, 0.6)',
+                    outline: 'rgba(80, 80, 0, 0.6)'
+                })
+            },
         ];
 
         function getRandomStyle() {
@@ -738,24 +960,12 @@
                 const style = getRandomStyle();
                 const colors = style.getColors();
 
-                // Add gradient overlay based on text position
+                // Add gradient overlay for bottom text (always bottom now)
                 const overlayGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                if (style.position === 'bottom') {
-                    overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-                    overlayGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
-                    overlayGradient.addColorStop(0.8, 'rgba(0, 0, 0, 0.2)');
-                    overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
-                } else if (style.position === 'top') {
-                    overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0.5)');
-                    overlayGradient.addColorStop(0.2, 'rgba(0, 0, 0, 0.2)');
-                    overlayGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
-                    overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                } else {
-                    overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0.1)');
-                    overlayGradient.addColorStop(0.4, 'rgba(0, 0, 0, 0)');
-                    overlayGradient.addColorStop(0.6, 'rgba(0, 0, 0, 0)');
-                    overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0.2)');
-                }
+                overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                overlayGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+                overlayGradient.addColorStop(0.75, 'rgba(0, 0, 0, 0.15)');
+                overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
                 ctx.fillStyle = overlayGradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -768,15 +978,8 @@
                 const text = 'Bom dia';
                 const x = canvas.width / 2;
                 
-                // Calculate Y position based on style
-                let y;
-                if (style.position === 'bottom') {
-                    y = canvas.height - fontSize * 0.9;
-                } else if (style.position === 'top') {
-                    y = fontSize * 0.9;
-                } else {
-                    y = canvas.height / 2;
-                }
+                // Always position at bottom
+                const y = canvas.height - fontSize * 0.9;
 
                 // Apply different effects based on style
                 const effect = style.effect || 'glow';
