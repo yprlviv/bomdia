@@ -304,7 +304,7 @@
         </div>
 
         <p class="credits">
-            Images from <a href="https://picsum.photos" target="_blank">Lorem Picsum</a>
+            Images from <a href="https://unsplash.com" target="_blank">Unsplash</a>
         </p>
 
         <footer class="footer">
@@ -315,211 +315,79 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // PRIORITY: Animals, positivity, fun images (appear 3x more often)
-        const priorityImageIds = [
-            // === CUTE ANIMALS ===
-            // Dogs - everyone's best friend!
-            237,  // Happy dog portrait
-            219,  // Dog in nature
-            200,  // Friendly dog
-            169,  // Cute dog
-            1025, // Adorable pug
-            1062, // Playful dog
-            40,   // Dog on beach
-            177,  // Sweet dog
-            783,  // Happy pup
-            837,  // Dog smiling
-            1024, // Cute puppy
-            1053, // Fluffy dog
-            1061, // Dog portrait
-            1069, // Joyful dog
+        // ============================================
+        // UNSPLASH API CONFIGURATION
+        // ============================================
+        // Get your free API key at: https://unsplash.com/developers
+        // 1. Create an account at unsplash.com
+        // 2. Go to https://unsplash.com/developers
+        // 3. Click "New Application"
+        // 4. Accept terms and create app
+        // 5. Copy your "Access Key" and paste below
+        // ============================================
+        
+        const UNSPLASH_ACCESS_KEY = 'YOUR_UNSPLASH_ACCESS_KEY_HERE';
+        
+        // Search terms for positive, fun images (randomly selected each time)
+        const searchTerms = [
+            // Animals - cute and fun
+            'cute dog',
+            'happy dog',
+            'funny dog',
+            'puppy',
+            'cute cat',
+            'funny cat',
+            'kitten',
+            'cute animals',
+            'funny animals',
+            'baby animals',
+            'pets',
+            'wildlife cute',
             
-            // Cats - internet favorites
-            1074, // Cute cat
-            1084, // Cat portrait
-            1039, // Sleepy cat
-            1047, // Curious cat
+            // Positive & Fun
+            'happiness',
+            'joy',
+            'celebration',
+            'party',
+            'confetti',
+            'balloons',
+            'colorful',
+            'rainbow',
+            'smile',
+            'laughing',
+            'fun',
+            'positive vibes',
+            'good vibes',
             
-            // Other cute animals
-            433,  // Deer in nature
-            582,  // Colorful bird
-            593,  // Beautiful butterfly
-            659,  // Majestic horse
-            1003, // Owl
-            1020, // Fox
-            1033, // Squirrel
-            1037, // Bunny rabbit
-            1055, // Sheep
-            1059, // Llama/Alpaca
-            1060, // Duck
-            1067, // Goat
-            1070, // Parrot
-            1076, // Seagull
-            1078, // Peacock
-            1081, // Flamingo
+            // Food & Drinks
+            'coffee morning',
+            'breakfast',
+            'delicious food',
+            'colorful food',
+            'fruits',
+            'dessert',
+            'ice cream',
+            'donuts',
+            'cupcakes',
+            'smoothie',
             
-            // === FUN & COLORFUL ===
-            225,  // Balloons celebration
-            318,  // Colorful abstract
-            326,  // Fun bright colors
-            370,  // Celebration vibes
-            399,  // Happy colors
-            403,  // Bright positive
-            452,  // Fun scene
-            532,  // Cheerful colors
-            564,  // Bright happy
-            755,  // Fun moment
-            866,  // Cheerful scene
-            1041, // Colorful umbrellas
-            1043, // Bright lights
-            1049, // Neon signs
-            1051, // Colorful wall
-            1057, // Rainbow colors
-            1065, // Confetti
-            1071, // Party lights
-            1073, // Fireworks
-            1077, // Carnival
-            1079, // Festival
-            1082, // Disco ball
-            1085, // Sparklers
+            // Nature positivity
+            'sunrise',
+            'sunset beautiful',
+            'flowers',
+            'sunflowers',
+            'cherry blossom',
+            'spring flowers',
+            'tropical beach',
+            'beautiful nature',
+            'golden hour',
             
-            // === FOOD & DRINKS (Yummy!) ===
-            22,   // Coffee fun
-            68,   // Morning coffee
-            292,  // Delicious food
-            312,  // Fresh fruits
-            425,  // Tasty breakfast
-            429,  // Pancakes
-            431,  // Ice cream
-            436,  // Donuts
-            438,  // Cupcakes
-            441,  // Pizza
-            445,  // Burger
-            447,  // Smoothie
-            455,  // Croissant
-            459,  // Waffles
-            462,  // Macarons
-            466,  // Sushi
-            475,  // Tacos
-            488,  // Chocolate
-            493,  // Cookies
-            502,  // Fruit bowl
-            
-            // === HAPPY PEOPLE & LIFESTYLE ===
-            500,  // Positive vibes
-            609,  // Fun outdoor
-            658,  // Joyful moment
-            688,  // Happy scene
-            719,  // Positive energy
-            901,  // Happy vibes
-            984,  // Positive life
-            64,   // Friends laughing
-            334,  // Beach fun
-            342,  // Adventure
-            349,  // Travel joy
-            357,  // Outdoor fun
-            366,  // Friendship
-            378,  // Happy moments
-            385,  // Celebration
-            392,  // Good times
-            406,  // Joy
-            
-            // === CUTE & COZY ===
-            15,   // Cozy coffee
-            225,  // Warm vibes
-            260,  // Cozy blanket
-            270,  // Reading nook
-            280,  // Candles
-            290,  // Fairy lights
-            301,  // Cozy room
-            310,  // Warm drink
-            320,  // Comfort
-            330,  // Hygge vibes
-            
-            // === NATURE POSITIVITY ===
-            54,   // Beautiful flowers
-            65,   // Lavender field
-            90,   // Autumn colors
-            106,  // Sunrise hope
-            152,  // Sunset beauty
-            164,  // Flower garden
-            182,  // Spring blooms
-            190,  // Tropical paradise
-            197,  // Golden hour
-            204,  // Cherry blossoms
-            211,  // Sunflowers
-            218,  // Tulips
-            226,  // Daisies
-            233,  // Roses
-            240,  // Wildflowers
-        ];
-
-        // Secondary: Nature, landscapes, morning vibes
-        const secondaryImageIds = [
-            15,   // Coffee on wooden table
-            16,   // Beach waves
-            18,   // Forest path
-            20,   // Beach sunset
-            27,   // Sea waves
-            28,   // Mountain lake
-            29,   // Forest
-            36,   // Beach
-            39,   // Sunset landscape
-            47,   // Wheat field
-            48,   // Mountain
-            49,   // Sunset
-            54,   // Flowers
-            56,   // Beach rocks
-            58,   // Nature path
-            59,   // Foggy forest
-            65,   // Lavender field
-            66,   // Mountain road
-            69,   // Mountain lake
-            73,   // Green nature
-            76,   // Sunset sky
-            82,   // Beach sunset
-            84,   // Foggy mountains
-            89,   // Mountain peaks
-            90,   // Autumn leaves
-            91,   // Ocean waves
-            96,   // Sunrise clouds
-            100,  // Mountains
-            103,  // Sunset beach
-            106,  // Sunrise
-            110,  // Forest
-            114,  // Mountain landscape
-            118,  // Green hills
-            119,  // Tropical beach
-            129,  // Autumn forest
-            135,  // Waterfall
-            136,  // Beach sunset
-            142,  // Mountain lake
-            152,  // Sunset colors
-            155,  // Nature green
-            158,  // Mountain
-            164,  // Flowers
-            165,  // Beach
-            167,  // Forest path
-            168,  // Sunset
-            173,  // Green nature
-            178,  // Mountain
-            180,  // Sunset
-            182,  // Flowers
-            184,  // Landscape
-            185,  // Ocean
-            186,  // Forest
-            190,  // Beach
-            193,  // Mountain
-            195,  // Nature
-            197,  // Sunset
-        ];
-
-        // Combined list with priority images appearing 3x more often
-        const beautifulImageIds = [
-            ...priorityImageIds,
-            ...priorityImageIds,
-            ...priorityImageIds,
-            ...secondaryImageIds
+            // Cozy & Warm
+            'cozy',
+            'hygge',
+            'warm coffee',
+            'fairy lights',
+            'candles cozy',
         ];
 
         // Text style configurations with more variety
@@ -849,11 +717,35 @@
             setLoading(true);
 
             try {
-                // Pick a random image ID from our curated list
-                const imageId = beautifulImageIds[Math.floor(Math.random() * beautifulImageIds.length)];
+                let imageUrl;
                 
-                // Use Picsum Photos - reliable, free, CORS-enabled
-                const imageUrl = `https://picsum.photos/id/${imageId}/800/600`;
+                // Check if Unsplash API key is configured
+                if (UNSPLASH_ACCESS_KEY && UNSPLASH_ACCESS_KEY !== 'YOUR_UNSPLASH_ACCESS_KEY_HERE') {
+                    // Use Unsplash API for truly random images
+                    const searchTerm = searchTerms[Math.floor(Math.random() * searchTerms.length)];
+                    const response = await fetch(
+                        `https://api.unsplash.com/photos/random?query=${encodeURIComponent(searchTerm)}&orientation=landscape&content_filter=high`,
+                        {
+                            headers: {
+                                'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`
+                            }
+                        }
+                    );
+                    
+                    if (!response.ok) {
+                        throw new Error(`Unsplash API error: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    imageUrl = data.urls.regular;
+                    console.log(`Search: "${searchTerm}" | Photo by: ${data.user.name} on Unsplash`);
+                } else {
+                    // Fallback to Picsum if no API key
+                    console.warn('No Unsplash API key configured. Using Picsum fallback.');
+                    console.warn('Get your free key at: https://unsplash.com/developers');
+                    const randomId = Math.floor(Math.random() * 1000) + 1;
+                    imageUrl = `https://picsum.photos/id/${randomId}/800/600`;
+                }
 
                 // Load the image
                 const img = new Image();
