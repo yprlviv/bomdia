@@ -276,6 +276,44 @@
             transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
+
+        .upload-section {
+            margin-top: 1.5rem;
+        }
+
+        .or-divider {
+            color: var(--deep-brown);
+            opacity: 0.6;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--deep-brown), #8D6E63);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(93, 64, 55, 0.3);
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(93, 64, 55, 0.4);
+        }
+
+        .upload-hint {
+            font-size: 0.8rem;
+            color: var(--deep-brown);
+            opacity: 0.6;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -285,8 +323,17 @@
         <p class="subtitle">Generate beautiful morning greetings to share with friends</p>
         
         <button class="generate-btn" id="generateBtn" onclick="generateImage()">
-            ✨ Generate Image
+            ✨ Generate Random Image
         </button>
+
+        <div class="upload-section">
+            <p class="or-divider">— or —</p>
+            <label class="upload-btn" for="imageUpload">
+                📁 Upload Your Own Image
+            </label>
+            <input type="file" id="imageUpload" accept="image/jpeg,image/png,image/webp" onchange="handleUpload(event)" hidden>
+            <p class="upload-hint">JPG, PNG, or WEBP</p>
+        </div>
 
         <div class="loading" id="loading">
             <div class="loading-spinner"></div>
@@ -1375,6 +1422,235 @@
                 } catch (downloadError) {
                     showToast('❌ Could not copy image. Try right-click → Copy Image');
                 }
+            }
+        }
+
+        // Handle user uploaded image
+        async function handleUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                showError('Please upload a JPG, PNG, or WEBP image.');
+                return;
+            }
+            
+            setLoading(true);
+            document.querySelector('.loading-text').textContent = 'Processing your image...';
+            
+            try {
+                // Read the file as data URL
+                const imageUrl = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = () => reject(new Error('Failed to read file'));
+                    reader.readAsDataURL(file);
+                });
+                
+                // Load the image
+                const img = new Image();
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = () => reject(new Error('Failed to load image'));
+                    img.src = imageUrl;
+                });
+                
+                // Create canvas and draw image with text
+                const canvas = document.getElementById('resultCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas size to match image
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                // Draw the image
+                ctx.drawImage(img, 0, 0);
+                
+                // Get random text style
+                const style = getRandomStyle();
+                const colors = style.getColors();
+                
+                // Add gradient overlay for bottom text
+                const overlayGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                overlayGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                overlayGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+                overlayGradient.addColorStop(0.75, 'rgba(0, 0, 0, 0.15)');
+                overlayGradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
+                ctx.fillStyle = overlayGradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Configure text style
+                const fontSize = Math.min(canvas.width, canvas.height) * 0.15;
+                ctx.font = `bold ${fontSize}px ${style.font}, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                const text = 'Bom dia';
+                const x = canvas.width / 2;
+                const y = canvas.height - fontSize * 0.9;
+                
+                // Apply effect
+                const effect = style.effect || 'glow';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                
+                switch (effect) {
+                    case 'neon':
+                        ctx.shadowColor = colors.shadow;
+                        ctx.shadowBlur = 30;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.1;
+                        ctx.strokeText(text, x, y);
+                        ctx.shadowBlur = 20;
+                        ctx.strokeText(text, x, y);
+                        ctx.shadowBlur = 10;
+                        ctx.fillStyle = colors.gradient[0];
+                        ctx.fillText(text, x, y);
+                        break;
+                    case 'outline':
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.15;
+                        ctx.strokeText(text, x, y);
+                        ctx.fillStyle = colors.gradient[0];
+                        ctx.fillText(text, x, y);
+                        break;
+                    case 'emboss':
+                        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                        ctx.fillText(text, x + 4, y + 4);
+                        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                        ctx.fillText(text, x - 2, y - 2);
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.04;
+                        ctx.strokeText(text, x, y);
+                        break;
+                    case 'shadow':
+                        ctx.shadowColor = colors.shadow;
+                        ctx.shadowBlur = 8;
+                        ctx.shadowOffsetX = 6;
+                        ctx.shadowOffsetY = 6;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.06;
+                        ctx.strokeText(text, x, y);
+                        break;
+                    case 'solid':
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.05;
+                        ctx.strokeText(text, x, y);
+                        break;
+                    case 'rainbow':
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.08;
+                        ctx.strokeText(text, x, y);
+                        break;
+                    case 'fire':
+                        ctx.shadowColor = 'rgba(255, 100, 0, 0.8)';
+                        ctx.shadowBlur = 25;
+                        ctx.shadowOffsetY = -5;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.08;
+                        ctx.strokeText(text, x, y);
+                        break;
+                    case 'ice':
+                        ctx.shadowColor = colors.shadow;
+                        ctx.shadowBlur = 15;
+                        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+                        ctx.lineWidth = fontSize * 0.1;
+                        ctx.strokeText(text, x, y);
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.04;
+                        ctx.strokeText(text, x, y);
+                        break;
+                    case 'retro':
+                        ctx.fillStyle = colors.shadow;
+                        ctx.fillText(text, x + 5, y + 5);
+                        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                        ctx.fillText(text, x + 3, y + 3);
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.06;
+                        ctx.strokeText(text, x, y);
+                        break;
+                    case 'metallic':
+                        ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                        ctx.shadowBlur = 10;
+                        ctx.shadowOffsetX = 3;
+                        ctx.shadowOffsetY = 3;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.06;
+                        ctx.strokeText(text, x, y);
+                        break;
+                    case 'glow':
+                    default:
+                        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                        ctx.shadowBlur = 20;
+                        ctx.shadowOffsetX = 4;
+                        ctx.shadowOffsetY = 4;
+                        ctx.strokeStyle = colors.outline;
+                        ctx.lineWidth = fontSize * 0.08;
+                        ctx.strokeText(text, x, y);
+                        break;
+                }
+                
+                // Draw main text with gradient
+                const textGradient = ctx.createLinearGradient(
+                    x - fontSize * 2, y - fontSize / 2,
+                    x + fontSize * 2, y + fontSize / 2
+                );
+                
+                if (colors.gradient.length === 6) {
+                    colors.gradient.forEach((color, i) => {
+                        textGradient.addColorStop(i / (colors.gradient.length - 1), color);
+                    });
+                } else if (colors.gradient.length === 5) {
+                    colors.gradient.forEach((color, i) => {
+                        textGradient.addColorStop(i / (colors.gradient.length - 1), color);
+                    });
+                } else if (colors.gradient.length === 4) {
+                    textGradient.addColorStop(0, colors.gradient[0]);
+                    textGradient.addColorStop(0.33, colors.gradient[1]);
+                    textGradient.addColorStop(0.66, colors.gradient[2]);
+                    textGradient.addColorStop(1, colors.gradient[3]);
+                } else {
+                    textGradient.addColorStop(0, colors.gradient[0]);
+                    textGradient.addColorStop(0.5, colors.gradient[1]);
+                    textGradient.addColorStop(1, colors.gradient[2]);
+                }
+                
+                ctx.fillStyle = textGradient;
+                
+                if (['glow', 'neon', 'fire', 'ice'].includes(effect)) {
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = colors.shadow;
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+                }
+                
+                ctx.fillText(text, x, y);
+                
+                // Reset shadow
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                
+                console.log(`Uploaded image with style: ${style.name} | Effect: ${effect}`);
+                
+                // Show the result
+                document.getElementById('imageContainer').classList.add('visible');
+                document.getElementById('copyBtn').classList.remove('copied');
+                document.getElementById('copyBtn').innerHTML = '📋 Copy Image';
+                
+                showToast('🖼️ Your image is ready!');
+                
+            } catch (error) {
+                console.error('Error processing uploaded image:', error);
+                showError('Oops! Failed to process image. Please try again.');
+            } finally {
+                setLoading(false);
+                document.querySelector('.loading-text').textContent = 'Finding the perfect sunrise...';
+                // Reset file input so same file can be uploaded again
+                event.target.value = '';
             }
         }
 
